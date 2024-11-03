@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/21 15:15:56 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:50:18 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	logic(char *line, char **envp)
 	// 	return (ft_error(SYNTAX_ERROR, 1));
 	expansion(&tokens, envp);
 	tree = get_tree(tokens, envp, 0);
-	execution(tree);
+	//execution(tree);
+	
 	// print_tokens(&tokens);
 	free_tokens(&tokens);
 }

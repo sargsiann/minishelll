@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:47:54 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/21 15:17:53 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/03 17:41:45 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,37 @@ extern int g_status;
 
 void	exec_cmd(t_command *cmd)
 {
-	int		pid;
-	int		status;
+	int			pid;
+	int			status;
+	int			fd;
+	t_outfile	*tmp;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		if (cmd->infile)
 		{
-			int fd = open(cmd->infile, O_RDONLY);
+			fd = open(cmd->infile, O_RDONLY);
 			if (fd < 0)
 				ft_error(cmd->infile, NO_FILE_STATUS);
 			dup2(fd, 0);
 			close(fd);
 		}
-		if (cmd->outfile)
+		if (cmd->outfiles)
 		{
-			int fd;
-			if (cmd->append == 1)
-				fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else
-				fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd < 0)
-				ft_error(cmd->outfile, NO_FILE_STATUS);
+			while (tmp)
+			{
+				if (tmp->type == OUTFILE_ID)
+					fd = open(tmp->name, O_WRONLY | O_CREAT, O_APPEND | 0644);
+				else
+					fd = open(tmp->name, O_WRONLY | O_CREAT, O_TRUNC | 0644);
+				if (fd < 0)
+					ft_error(tmp->name, NO_FILE_STATUS);
+				if (tmp->next == NULL)
+					dup2(fd, 1);
+				close(fd);
+				tmp = tmp->next;
+			}
 			dup2(fd, 1);
 			close(fd);
 		}
@@ -54,10 +62,10 @@ void	exec_cmd(t_command *cmd)
 
 void	execution(void *root)
 {
-	t_command *cmd;
-	t_operator *op;
-	int		fd[2];
-	int		pid;
+	t_command	*cmd;
+	t_operator	*op;
+	int			fd[2];
+	int			pid;
 
 	op = (t_operator *)root;
 	if (op->type == COMMAND_ID)

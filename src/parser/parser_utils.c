@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/21 15:28:32 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:34:10 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ t_command	*new_command(t_token *t, char **envp)
 	t_command	*command;
 
 	command = malloc(sizeof(t_command));
-	command->word = get_command_path(envp, t->word);
-	command->args = get_cmd_args(t);
-	command->infile = get_cmd_infile(t);
-	command->outfile = get_cmd_outfile(t);
-	command->append = get_out_type(t);
+	command->type = COMMAND_ID;
+	if (t->type == COMMAND_ID)
+		command->word = get_command_path(envp, t->word);
+	else
+		command->word = ft_strdup(t->word);
+	command->args = get_cmd_args(t->next);
+	command->infile = get_cmd_infile(t->next);
+	command->outfiles = get_cmd_outfiles(t->next);
 	return (command);
 }
 
@@ -39,8 +42,8 @@ t_operator	*new_operator(t_token *t, int priority)
 
 void	add_node(t_operator *op, void *node, int direction)
 {
-	t_command *cmd;	
-	
+	t_command	*cmd;
+
 	cmd = (t_command *)node;
 	if (cmd->type == COMMAND_ID || cmd->type == EXE_ID)
 	{
@@ -59,3 +62,4 @@ void	add_node(t_operator *op, void *node, int direction)
 		}
 	}
 }
+

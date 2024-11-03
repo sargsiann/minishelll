@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:53:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/15 23:43:05 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:24:46 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 // TO DO WRITE PARSE->SUBSHELL
 // TO DO WRITE ADD->SUBSHELL
@@ -19,8 +18,7 @@
 
 void	print_tree(void *tree, int lvl);
 
-
-int		get_priority(t_token *t)
+int	get_priority(t_token *t)
 {
 	if (t->type == PIPE_ID)
 		return (PIPE_PR);
@@ -42,7 +40,26 @@ void	print_node(void *node)
 	op = (t_operator *)node;
 	if (cmd->type == COMMAND_ID || cmd->type == EXE_ID)
 	{
-		printf("%s\n", cmd->word);
+		printf("%s", cmd->word);
+		printf("  args = ");
+		for (int i = 0; cmd->args[i]; i++)
+		{
+			printf("%s ", cmd->args[i]);
+		}
+		if (cmd->infile)
+			printf("infile = %s ", cmd->infile);
+		if (cmd->outfiles)
+		{
+			t_outfile	*tmp;
+
+			tmp = cmd->outfiles;
+			printf("outfiles = ");
+			while (tmp)
+			{
+				printf("%s ", tmp->name);
+				tmp = tmp->next;
+			}
+		}
 	}
 	else
 	{
@@ -55,7 +72,7 @@ void	print_node(void *node)
 	}
 }
 
-int		check_by_root(void *root, t_operator *op)
+int	check_by_root(void *root, t_operator *op)
 {
 	t_operator	*tmp;
 
@@ -65,12 +82,12 @@ int		check_by_root(void *root, t_operator *op)
 	return (0);
 }
 
-t_token *move_token(t_token *tmp, int lvl)
+t_token	*move_token(t_token *tmp, int lvl)
 {
 	while (1)
 	{
 		if (tmp->type == CLOSE_BRACE_ID)
-			break;
+			break ;
 		tmp = tmp->next;
 	}
 	return (tmp);
@@ -111,8 +128,7 @@ void	*get_tree(t_token *tmp, char **envp, int lvl)
 					add_node(current_op, current_cmd, 1);
 			}
 		}
-		if (tmp->type == PIPE_ID || tmp->type == AND_ID 
-			|| tmp->type == OR_ID)
+		if (tmp->type == PIPE_ID || tmp->type == AND_ID || tmp->type == OR_ID)
 		{
 			tmp1 = new_operator(tmp, get_priority(tmp));
 			if (current_op == NULL)
@@ -160,26 +176,25 @@ void	*get_tree(t_token *tmp, char **envp, int lvl)
 	return (root);
 }
 
-void print_tree(void *tree, int level) {
-    t_operator *op;
-    t_command *cmd;
+void	print_tree(void *tree, int level)
+{
+	t_operator	*op;
+	t_command	*cmd;
 
-    op = (t_operator *)tree;
-    cmd = (t_command *)tree;
-
-    // Печать отступов и маркеров для отображения уровня
-    for (int i = 0; i < level; i++) {
-        printf("|   ");
-    }
-
-    // Печать текущего узла
-    printf("|-- ");
-    print_node(cmd);
-    printf("\n");
-
-    // Рекурсивный вызов для операторов
-    if (cmd && cmd->type != COMMAND_ID && cmd->type != EXE_ID) {
-        print_tree(op->left, level + 1);
-        print_tree(op->right, level + 1);
-    }
+	op = (t_operator *)tree;
+	cmd = (t_command *)tree;
+	// Печать отступов и маркеров для отображения уровня
+	for (int i = 0; i < level; i++)
+	{
+		printf("|   ");
+	}
+	// Печать текущего узла
+	printf("|-- ");
+	print_node(cmd);	printf("\n");
+	// Рекурсивный вызов для операторов
+	if (cmd && cmd->type != COMMAND_ID && cmd->type != EXE_ID)
+	{
+		print_tree(op->left, level + 1);
+		print_tree(op->right, level + 1);
+	}
 }

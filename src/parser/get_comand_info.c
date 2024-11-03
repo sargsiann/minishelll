@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_comand_info.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:59:55 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/15 23:53:13 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:16:57 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	get_args_size(t_token *t)
 {
-	int		size;
+	int	size;
 
 	size = 0;
+	t = t;
 	while (t && t->type != COMMAND_ID)
 	{
 		if (t->type == ARGUMENT_ID)
@@ -62,32 +63,43 @@ char	*get_cmd_infile(t_token *t)
 	return (NULL);
 }
 
-char	*get_cmd_outfile(t_token *t)
+t_outfile	*new_outfile(t_token *command)
 {
-	t_token	*tmp;
+	t_outfile	*outfile;
 
-	tmp = t;
-	while (tmp && tmp->type != COMMAND_ID)
-	{
-		if (tmp->type == OUTFILE_ID || tmp->type == APPENDFILE_ID)
-			return (ft_strdup(tmp->word));
-		tmp = tmp->next;
-	}
-	return (NULL);
+	outfile = malloc(sizeof(t_outfile));
+	outfile->name = ft_strdup(command->word);
+	outfile->type = command->type;
+	outfile->next = NULL;
+	return (outfile);
 }
 
-int	get_out_type(t_token *t)
+t_outfile	*get_cmd_outfiles(t_token *command)
 {
-	t_token	*tmp;
+	t_outfile	*tmp;
+	t_outfile	*outfile;
+	t_outfile	*head;
 
-	tmp = t;
-	while (tmp && tmp->type != COMMAND_ID)
+	tmp = NULL;
+	outfile = NULL;
+	head = NULL;
+	while (command && command->type != COMMAND_ID)
 	{
-		if (tmp->type == OUTFILE_ID)
-			return (1);
-		if (tmp->type == APPENDFILE_ID)
-			return (2);
-		tmp = tmp->next;
+		if (command->type == OUTFILE_ID || command->type == APPENDFILE_ID)
+		{
+			tmp = new_outfile(command);
+			if (outfile == NULL)
+			{
+				outfile = tmp;
+				head = outfile;
+			}
+			else
+			{
+				outfile->next = tmp;
+				outfile = tmp;
+			}
+		}
+		command = command->next;
 	}
-	return (0);
+	return (head);
 }
