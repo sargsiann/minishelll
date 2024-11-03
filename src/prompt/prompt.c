@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/02 18:50:18 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:38:04 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ void	logic(char *line, char **envp)
 	// if (validate_by_order(&tokens) == 0)
 	// 	return (ft_error(SYNTAX_ERROR, 1));
 	expansion(&tokens, envp);
-	tree = get_tree(tokens, envp, 0);
-	//execution(tree);
-	
-	// print_tokens(&tokens);
+	//tree = get_tree(tokens, envp, 0);
+	execution(tree);
+	//free_tree(tree);
 	free_tokens(&tokens);
 }
 
