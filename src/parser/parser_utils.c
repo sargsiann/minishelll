@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/03 18:37:14 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:14:56 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ t_command	*new_command(t_token *t, char **envp)
 
 	command = malloc(sizeof(t_command));
 	command->type = COMMAND_ID;
-	if (t->type == COMMAND_ID)
-		command->word = get_command_path(envp, t->word);
-	else
-		command->word = ft_strdup(t->word);
+	command->word = ft_strdup(t->word);
 	command->args = get_cmd_args(t->next);
 	command->infile = get_cmd_infile(t->next);
 	command->outfiles = get_cmd_outfiles(t->next);
@@ -63,3 +60,13 @@ void	add_node(t_operator *op, void *node, int direction)
 	}
 }
 
+t_outfile	*new_outfile(t_token *command)
+{
+	t_outfile	*outfile;
+
+	outfile = malloc(sizeof(t_outfile));
+	outfile->name = ft_strdup(command->word);
+	outfile->type = command->type;
+	outfile->next = NULL;
+	return (outfile);
+}

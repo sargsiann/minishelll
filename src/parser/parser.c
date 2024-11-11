@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:53:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/03 18:24:46 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:33:05 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,16 @@ t_token	*move_token(t_token *tmp, int lvl)
 	}
 	return (tmp);
 }
+
+// COMMAND_CASE
+
+// OPERATOR_CASE
+
+// NO ROOT_OPERATOR_CASE
+
+// ROOT_OPERATOR_CASE
+// | LESS PRIORITY
+// | SAME OR MORE PRIORITY
 
 void	*get_tree(t_token *tmp, char **envp, int lvl)
 {

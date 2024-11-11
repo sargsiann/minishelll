@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_comand_info.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:59:55 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/03 18:16:57 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:13:43 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,12 @@ char	*get_cmd_infile(t_token *t)
 	return (NULL);
 }
 
-t_outfile	*new_outfile(t_token *command)
-{
-	t_outfile	*outfile;
 
-	outfile = malloc(sizeof(t_outfile));
-	outfile->name = ft_strdup(command->word);
-	outfile->type = command->type;
-	outfile->next = NULL;
-	return (outfile);
+static void	init(t_outfile **tmp, t_outfile **outfile, t_outfile **head)
+{
+	*tmp = NULL;
+	*outfile = NULL;
+	*head = NULL;
 }
 
 t_outfile	*get_cmd_outfiles(t_token *command)
@@ -80,9 +77,7 @@ t_outfile	*get_cmd_outfiles(t_token *command)
 	t_outfile	*outfile;
 	t_outfile	*head;
 
-	tmp = NULL;
-	outfile = NULL;
-	head = NULL;
+	init(&tmp, &outfile, &head);
 	while (command && command->type != COMMAND_ID)
 	{
 		if (command->type == OUTFILE_ID || command->type == APPENDFILE_ID)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_comand_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:23:42 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/03 18:28:07 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:12:16 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*get_command_path(char **envp, char *command)
 	folder = ft_strdup("");
 	path = NULL;
 	equal = 0;
-	command = ft_gstrjoin("/", command,0,0);
+	command = ft_gstrjoin("/", command, 0, 0);
 	if (access(command, F_OK) == 0)
 		return (command);
 	while (envp[i])
@@ -76,11 +76,7 @@ char	*get_command_path(char **envp, char *command)
 		equal = find_equal(envp[i]) + 1;
 		folder = ft_substr(envp[i], equal, ft_strlen(envp[i]) - equal);
 		if (ft_strncmp(folder, "/usr", 4) == 0)
-		{
 			path = search_for_exact(command, folder);
-		}
-		// else
-		// 	path = ft_gstrjoin(folder, command, 1, 0);
 		if (access(path, F_OK) == 0)
 			return (path);
 		i++;

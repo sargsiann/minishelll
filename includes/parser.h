@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:54:11 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/03 17:35:40 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:33:15 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			get_args_size(t_token *t);
 char		**get_cmd_args(t_token *t);
 char		*get_cmd_infile(t_token *t);
 t_outfile	*get_cmd_outfiles(t_token *t);
-int			get_out_type(t_token *t);
 char		*get_command_path(char **envp, char *command);
+t_outfile	*new_outfile(t_token *command);
 
 #endif

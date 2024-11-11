@@ -33,7 +33,7 @@ SRC_FILES = main.c utils.c \
 	    get_next_line.c get_next_line_utils.c \
 	    ) \
 		$(addprefix parser/, \
-		parser.c parser_utils.c get_comand_info.c get_comand_path.c \
+		parser.c parser_utils.c get_comand_info.c get_comand_path.c  free_tree.c\
 		) \
 		$(addprefix execution/, \
 		execution.c \
