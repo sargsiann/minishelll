@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/11 19:10:35 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:07:07 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	logic(char *line, char **envp)
 	if (check_for_quotes(line, 39) == 0)
 		return (ft_error(UNCLOSING_QUOTE, 1));
 	tokens = get_tokens(line);
-	if (validate_by_order(&tokens) == 0)
-		return (ft_error(SYNTAX_ERROR, 1));
+	// if (validate_by_order(&tokens) == 0)
+		// return (ft_error(SYNTAX_ERROR, 1));
 	expansion(&tokens, envp);
 	tree = get_tree(tokens, envp, 0);
 	//execution(tree);

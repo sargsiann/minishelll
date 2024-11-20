@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:53:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/11 19:33:05 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:07:19 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,88 @@ t_token	*move_token(t_token *tmp, int lvl)
 
 // COMMAND_CASE
 
+t_command	*command_case(t_operator **current_op,
+	void	**root, t_token *tmp, char **envp)
+{
+	t_command	*current_cmd;
+
+	current_cmd = new_command(tmp, envp);
+	if (*root == NULL)
+		*root = current_cmd;
+	else if (*current_op)
+	{
+		if ((*current_op)->left == NULL)
+			add_node(*current_op, current_cmd, 0);
+		else
+			add_node(*current_op, current_cmd, 1);
+	}
+	return (current_cmd);
+}
+
 // OPERATOR_CASE
 
-// NO ROOT_OPERATOR_CASE
 
-// ROOT_OPERATOR_CASE
 // | LESS PRIORITY
+void	mos_priority_op(void	**root, t_token *tmp,
+	t_command **current_cmd, t_operator **current_op);
+
+void	operator_case(void	**root, t_token *tmp,
+	t_command **current_cmd, t_operator **current_op)
+{
+	t_operator	*tmp1;
+
+	tmp1 = new_operator(tmp, get_priority(tmp));
+	if (*current_op == NULL)
+	{
+		*root = tmp1;
+		tmp1->left = *current_cmd;
+		*current_op = tmp1;
+	}
+	else
+	{
+		if (get_priority(tmp) < (*current_op)->priority)
+		{
+			(*current_op)->right = tmp1;
+			tmp1->head = *current_op;
+			tmp1->left = *current_cmd;
+			*current_op = tmp1;
+		}
+		else
+			mos_priority_op(root, tmp, current_cmd, current_op);
+	}
+}
+// ROOT_OPERATOR_CASE
+
+// | LESS PRIORITY
+void	mos_priority_op(void	**root, t_token *tmp,
+	t_command **current_cmd, t_operator **current_op)
+{
+	t_operator	*tmp1;
+
+	tmp1 = new_operator(tmp, get_priority(tmp));
+	if (get_priority(tmp) == (*current_op)->priority)
+	{
+		if (check_by_root(*root, tmp1))
+		{
+			tmp1->left = *root;
+			*root = tmp1;
+			*current_op = tmp1;
+		}
+		else
+		{
+			tmp1->left = *current_op;
+			tmp1->head = (*current_op)->head;
+			(*current_op)->head->right = tmp1;
+			*current_op = tmp1;
+		}
+	}
+	else
+	{
+		tmp1->left = *root;
+		*root = tmp1;
+		*current_op = tmp1;
+	}
+}
 // | SAME OR MORE PRIORITY
 
 void	*get_tree(t_token *tmp, char **envp, int lvl)
@@ -108,7 +184,6 @@ void	*get_tree(t_token *tmp, char **envp, int lvl)
 	void		*root;
 	t_operator	*current_op;
 	t_command	*current_cmd;
-	t_operator	*tmp1;
 
 	root = NULL;
 	current_cmd = NULL;
@@ -126,60 +201,9 @@ void	*get_tree(t_token *tmp, char **envp, int lvl)
 		if (tmp->type == CLOSE_BRACE_ID && lvl != 0)
 			return (root);
 		if (tmp->type == COMMAND_ID || tmp->type == EXE_ID)
-		{
-			current_cmd = new_command(tmp, envp);
-			if (root == NULL)
-				root = current_cmd;
-			else if (current_op)
-			{
-				if (current_op->left == NULL)
-					add_node(current_op, current_cmd, 0);
-				else
-					add_node(current_op, current_cmd, 1);
-			}
-		}
+			current_cmd = command_case(&current_op, &root, tmp, envp);
 		if (tmp->type == PIPE_ID || tmp->type == AND_ID || tmp->type == OR_ID)
-		{
-			tmp1 = new_operator(tmp, get_priority(tmp));
-			if (current_op == NULL)
-			{
-				root = tmp1;
-				tmp1->left = current_cmd;
-				current_op = tmp1;
-			}
-			else
-			{
-				if (get_priority(tmp) < current_op->priority)
-				{
-					current_op->right = tmp1;
-					tmp1->head = current_op;
-					tmp1->left = current_cmd;
-					current_op = tmp1;
-				}
-				else if (get_priority(tmp) == current_op->priority)
-				{
-					if (check_by_root(root, tmp1))
-					{
-						tmp1->left = root;
-						root = tmp1;
-						current_op = tmp1;
-					}
-					else
-					{
-						tmp1->left = current_op;
-						tmp1->head = current_op->head;
-						current_op->head->right = tmp1;
-						current_op = tmp1;
-					}
-				}
-				else
-				{
-					tmp1->left = root;
-					root = tmp1;
-					current_op = tmp1;
-				}
-			}
-		}
+			operator_case(&root, tmp, &current_cmd, &current_op);
 		tmp = tmp->next;
 	}
 	print_tree(root, 1);

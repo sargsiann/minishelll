@@ -11,9 +11,10 @@ LIBFT_DIR = $(LIB_DIR)/libft
 DEPS = Makefile includes/minishell.h includes/prompt.h
 
 # Source Files
-SRC_FILES = main.c utils.c \
+SRC_FILES = main.c \
 	    $(addprefix utils/, \
 	     ft_error.c \
+		 utils.c \
 	    ) \
 	    $(addprefix prompt/, \
 	    prompt.c prompt_utils.c signal.c \
