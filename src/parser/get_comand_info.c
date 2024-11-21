@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:59:55 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/11 19:13:43 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:57:46 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ char	*get_cmd_infile(t_token *t)
 	}
 	return (NULL);
 }
-
 
 static void	init(t_outfile **tmp, t_outfile **outfile, t_outfile **head)
 {

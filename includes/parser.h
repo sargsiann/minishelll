@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:54:11 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/11 19:33:15 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:13:32 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,13 @@ char		*get_cmd_infile(t_token *t);
 t_outfile	*get_cmd_outfiles(t_token *t);
 char		*get_command_path(char **envp, char *command);
 t_outfile	*new_outfile(t_token *command);
+t_command	*command_case(t_operator **current_op,
+				void	**root, t_token *tmp, char **envp);
+void		mos_priority_op(void	**root, t_token *tmp,
+				t_operator **current_op);
 
+void		operator_case(void	**root, t_token *tmp,
+				t_command **current_cmd, t_operator **current_op);
+void		mos_priority_op(void	**root, t_token *tmp,
+				t_operator **current_op);
 #endif

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/11 19:14:56 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:56:39 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_command	*new_command(t_token *t, char **envp)
 {
 	t_command	*command;
 
+	(void )envp;
 	command = malloc(sizeof(t_command));
 	command->type = COMMAND_ID;
 	command->word = ft_strdup(t->word);

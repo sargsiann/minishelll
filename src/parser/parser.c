@@ -6,83 +6,15 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:53:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/20 19:07:19 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:30:37 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// TO DO WRITE PARSE->SUBSHELL
-// TO DO WRITE ADD->SUBSHELL
-// TO DO WRITE MAIN FUNCTION AND SHIFTER FOR TOKEN POINTER FOR DEEPANCE
-
 void	print_tree(void *tree, int lvl);
 
-int	get_priority(t_token *t)
-{
-	if (t->type == PIPE_ID)
-		return (PIPE_PR);
-	if (t->type == AND_ID)
-		return (AND_PR);
-	if (t->type == OR_ID)
-		return (OR_PR);
-	return (CM_PR);
-}
-
-void	print_node(void *node)
-{
-	t_command	*cmd;
-	t_operator	*op;
-
-	if (!node)
-		return ;
-	cmd = (t_command *)node;
-	op = (t_operator *)node;
-	if (cmd->type == COMMAND_ID || cmd->type == EXE_ID)
-	{
-		printf("%s", cmd->word);
-		printf("  args = ");
-		for (int i = 0; cmd->args[i]; i++)
-		{
-			printf("%s ", cmd->args[i]);
-		}
-		if (cmd->infile)
-			printf("infile = %s ", cmd->infile);
-		if (cmd->outfiles)
-		{
-			t_outfile	*tmp;
-
-			tmp = cmd->outfiles;
-			printf("outfiles = ");
-			while (tmp)
-			{
-				printf("%s ", tmp->name);
-				tmp = tmp->next;
-			}
-		}
-	}
-	else
-	{
-		if (op->type == PIPE_ID)
-			printf("|\n");
-		if (op->type == AND_ID)
-			printf("&&\n");
-		if (op->type == OR_ID)
-			printf("||\n");
-	}
-}
-
-int	check_by_root(void *root, t_operator *op)
-{
-	t_operator	*tmp;
-
-	tmp = (t_operator *)root;
-	if (tmp->priority <= op->priority)
-		return (1);
-	return (0);
-}
-
-t_token	*move_token(t_token *tmp, int lvl)
+t_token	*move_token(t_token *tmp)
 {
 	while (1)
 	{
@@ -93,91 +25,12 @@ t_token	*move_token(t_token *tmp, int lvl)
 	return (tmp);
 }
 
-// COMMAND_CASE
-
-t_command	*command_case(t_operator **current_op,
-	void	**root, t_token *tmp, char **envp)
+static void	init(void **root, t_operator **op, t_command **com)
 {
-	t_command	*current_cmd;
-
-	current_cmd = new_command(tmp, envp);
-	if (*root == NULL)
-		*root = current_cmd;
-	else if (*current_op)
-	{
-		if ((*current_op)->left == NULL)
-			add_node(*current_op, current_cmd, 0);
-		else
-			add_node(*current_op, current_cmd, 1);
-	}
-	return (current_cmd);
+	*root = 0;
+	*op = 0;
+	*com = 0;
 }
-
-// OPERATOR_CASE
-
-
-// | LESS PRIORITY
-void	mos_priority_op(void	**root, t_token *tmp,
-	t_command **current_cmd, t_operator **current_op);
-
-void	operator_case(void	**root, t_token *tmp,
-	t_command **current_cmd, t_operator **current_op)
-{
-	t_operator	*tmp1;
-
-	tmp1 = new_operator(tmp, get_priority(tmp));
-	if (*current_op == NULL)
-	{
-		*root = tmp1;
-		tmp1->left = *current_cmd;
-		*current_op = tmp1;
-	}
-	else
-	{
-		if (get_priority(tmp) < (*current_op)->priority)
-		{
-			(*current_op)->right = tmp1;
-			tmp1->head = *current_op;
-			tmp1->left = *current_cmd;
-			*current_op = tmp1;
-		}
-		else
-			mos_priority_op(root, tmp, current_cmd, current_op);
-	}
-}
-// ROOT_OPERATOR_CASE
-
-// | LESS PRIORITY
-void	mos_priority_op(void	**root, t_token *tmp,
-	t_command **current_cmd, t_operator **current_op)
-{
-	t_operator	*tmp1;
-
-	tmp1 = new_operator(tmp, get_priority(tmp));
-	if (get_priority(tmp) == (*current_op)->priority)
-	{
-		if (check_by_root(*root, tmp1))
-		{
-			tmp1->left = *root;
-			*root = tmp1;
-			*current_op = tmp1;
-		}
-		else
-		{
-			tmp1->left = *current_op;
-			tmp1->head = (*current_op)->head;
-			(*current_op)->head->right = tmp1;
-			*current_op = tmp1;
-		}
-	}
-	else
-	{
-		tmp1->left = *root;
-		*root = tmp1;
-		*current_op = tmp1;
-	}
-}
-// | SAME OR MORE PRIORITY
 
 void	*get_tree(t_token *tmp, char **envp, int lvl)
 {
@@ -185,9 +38,7 @@ void	*get_tree(t_token *tmp, char **envp, int lvl)
 	t_operator	*current_op;
 	t_command	*current_cmd;
 
-	root = NULL;
-	current_cmd = NULL;
-	current_op = NULL;
+	init(&root, &current_op, &current_cmd);
 	while (tmp)
 	{
 		if (tmp->type == OPEN_BRACE_ID)
@@ -196,7 +47,7 @@ void	*get_tree(t_token *tmp, char **envp, int lvl)
 				root = get_tree(tmp->next, envp, lvl + 1);
 			else
 				current_op->right = get_tree(tmp->next, envp, lvl + 1);
-			tmp = move_token(tmp->next, lvl + 1);
+			tmp = move_token(tmp->next);
 		}
 		if (tmp->type == CLOSE_BRACE_ID && lvl != 0)
 			return (root);
@@ -206,29 +57,5 @@ void	*get_tree(t_token *tmp, char **envp, int lvl)
 			operator_case(&root, tmp, &current_cmd, &current_op);
 		tmp = tmp->next;
 	}
-	print_tree(root, 1);
 	return (root);
-}
-
-void	print_tree(void *tree, int level)
-{
-	t_operator	*op;
-	t_command	*cmd;
-
-	op = (t_operator *)tree;
-	cmd = (t_command *)tree;
-	// Печать отступов и маркеров для отображения уровня
-	for (int i = 0; i < level; i++)
-	{
-		printf("|   ");
-	}
-	// Печать текущего узла
-	printf("|-- ");
-	print_node(cmd);	printf("\n");
-	// Рекурсивный вызов для операторов
-	if (cmd && cmd->type != COMMAND_ID && cmd->type != EXE_ID)
-	{
-		print_tree(op->left, level + 1);
-		print_tree(op->right, level + 1);
-	}
 }

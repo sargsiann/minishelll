@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 19:44:45 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/14 17:32:20 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:26:09 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	free_tokens(t_token **token)
 	t_token	*tmp;
 
 	tmp = *token;
+	if (!tmp)
+		return ;
 	while (*token)
 	{
 		tmp = *token;

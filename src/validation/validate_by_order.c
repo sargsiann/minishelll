@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_by_order.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 17:23:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/14 19:23:22 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:56:01 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	is_operator(t_token *token)
 	if (token->type != COMMAND_ID
 		&& token->type != ARGUMENT_ID && token->type != EXE_ID
 		&& token->type != OUTFILE_ID && token->type != INFILE_ID
-		&& token->type != APPENDFILE_ID)
+		&& token->type != APPENDFILE_ID && token->type != DELIMITER_ID)
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:52:21 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/21 15:15:21 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:53:21 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,20 @@
 # include "parser.h"
 # include "execution.h"
 
-# define UNCLOSING_QUOTE "Unclosed quote"
-# define UNCLOSING_DQUOTE "Unclosed double quote"
-# define UNCLOSING_BQUOTE "Unclosed back quote"
-# define UNCLOSING_BRACKET "Unclosed bracket"
-# define UNCLOSING_BRACE "Unclosed brace"
-# define UNCLOSING_PARANTHESIS "Unclosed paranthesis"
-# define UNKNOWN_COMMAND "command not found"
+# define UNCLOSING_QUOTE "Minishell: Unclosed quote"
+# define UNCLOSING_DQUOTE "Minishell: Unclosed double quote"
+# define UNCLOSING_BQUOTE "Minishell: Unclosed back quote"
+# define UNCLOSING_BRACKET "Minishell: Unclosed bracket"
+# define UNCLOSING_BRACE "Minishell: Unclosed brace"
+# define UNCLOSING_PARANTHESIS "Minishell: Unclosed paranthesis"
+# define UNKNOWN_COMMAND "Minishell: command not found"
 
-# define SYNTAX_ERROR "syntax error near unexpected token"
-# define VAR_ERROR "not a valid identifier"
+# define SYNTAX_ERROR "Minishell: syntax error near unexpected token"
+# define VAR_ERROR "Minishell: not a valid identifier"
 
-# define NO_FILE "No such file or directory"
-# define NO_FILE2 "Is a directory"
-# define NO_FILE3 "Permission denied"
+# define NO_FILE "Minishell: No such file or directory"
+# define NO_FILE2 "Minishell: Is a directory"
+# define NO_FILE3 "Minishell: Permission denied"
 
 # define UNCLOSED_STATUS 1
 # define SYNTAX_STATUS 2
@@ -51,5 +51,7 @@
 void	ft_mtx_free(char **mtx);
 void	ft_error(char *str, int status);
 void	print_vars(t_var *head);
+void	print_node(void *node);
+void	print_tree(void *tree, int level);
 
 #endif

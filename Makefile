@@ -34,7 +34,7 @@ SRC_FILES = main.c \
 	    get_next_line.c get_next_line_utils.c \
 	    ) \
 		$(addprefix parser/, \
-		parser.c parser_utils.c get_comand_info.c get_comand_path.c  free_tree.c\
+		parser.c cases.c parser_utils.c get_comand_info.c get_comand_path.c  free_tree.c\
 		) \
 		$(addprefix execution/, \
 		execution.c \
@@ -48,7 +48,7 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
 # Compiler settings
 CC = cc
-CFLAGS = -Ilibs/readline -Ilibs/libft # -Wall -Wextra -Werror
+CFLAGS = -Ilibs/readline -Ilibs/libft #-Wall -Wextra -Werror
 INC = -I libs/libft
 LIBFT_LIB = libs/libft/libft.a
 
