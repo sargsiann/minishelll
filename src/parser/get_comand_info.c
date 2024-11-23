@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:59:55 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 13:51:24 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:25:45 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,26 @@ char	*get_cmd_infile(t_token *t)
 	return (infile);
 }
 
-char	*get_here_doc(t_token *t)
+char	**get_here_doc(t_token *t)
 {
 	t_token	*tmp;
 	char	*limter;
 
 	tmp = t;
-	limter = NULL;
+	limter = ft_strdup("");
 	while (tmp && tmp->type != COMMAND_ID)
 	{
-		if (tmp->type == HERE_DOC)
-			limter = ft_strdup(tmp->next->word);
+		if (tmp->type == DELIMITER_ID)
+			limter = ft_gstrjoin(limter, tmp->word, 1, 0);
 		if (tmp->type == INFILE_ID && limter)
 		{
 			free(limter);
 			limter = NULL;
 		}
+		limter = ft_gstrjoin(limter, "\n", 1, 0);
 		tmp = tmp->next;
 	}
-	return (limter);
+	return (ft_split(limter, '\n',1));
 }
 
 
