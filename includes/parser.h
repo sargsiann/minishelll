@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:54:11 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/21 19:13:32 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:52:12 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_command
 	char				*word;
 	char				**args;
 	char				*infile;
+	char				*here_doc;
 	struct s_outfile	*outfiles;
 }	t_command;
 
@@ -64,4 +65,6 @@ void		operator_case(void	**root, t_token *tmp,
 				t_command **current_cmd, t_operator **current_op);
 void		mos_priority_op(void	**root, t_token *tmp,
 				t_operator **current_op);
+char		*get_here_doc(t_token *t);
+
 #endif

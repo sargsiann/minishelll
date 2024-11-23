@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:17:39 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/21 19:10:14 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:53:37 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	print_node(void *node)
 		}
 		if (cmd->infile)
 			printf("infile = %s ", cmd->infile);
+		if (cmd->here_doc)
+			printf("here_doc = %s ", cmd->here_doc);
 		if (cmd->outfiles)
 		{
 			t_outfile	*tmp;

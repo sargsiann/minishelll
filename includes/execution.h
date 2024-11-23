@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 15:14:45 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/21 15:17:31 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:27:07 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # include <sys/wait.h>
 
 
-void	execution(void *root);
+void	execution(void *root, int lvl);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/21 18:56:39 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:52:38 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_command	*new_command(t_token *t, char **envp)
 	command->word = ft_strdup(t->word);
 	command->args = get_cmd_args(t->next);
 	command->infile = get_cmd_infile(t->next);
+	command->here_doc = get_here_doc(t->next);
 	command->outfiles = get_cmd_outfiles(t->next);
 	return (command);
 }

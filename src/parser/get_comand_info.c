@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:59:55 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/21 19:57:46 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:51:24 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,46 @@ char	**get_cmd_args(t_token *t)
 char	*get_cmd_infile(t_token *t)
 {
 	t_token	*tmp;
+	char	*infile;
 
 	tmp = t;
+	infile = NULL;
 	while (tmp && tmp->type != COMMAND_ID)
 	{
 		if (tmp->type == INFILE_ID)
-			return (ft_strdup(tmp->word));
+			infile = ft_strdup(tmp->word);
+		if (tmp->type == HERE_DOC && infile)
+		{
+			free(infile);
+			infile = NULL;
+		}
 		tmp = tmp->next;
 	}
-	return (NULL);
+	return (infile);
 }
+
+char	*get_here_doc(t_token *t)
+{
+	t_token	*tmp;
+	char	*limter;
+
+	tmp = t;
+	limter = NULL;
+	while (tmp && tmp->type != COMMAND_ID)
+	{
+		if (tmp->type == HERE_DOC)
+			limter = ft_strdup(tmp->next->word);
+		if (tmp->type == INFILE_ID && limter)
+		{
+			free(limter);
+			limter = NULL;
+		}
+		tmp = tmp->next;
+	}
+	return (limter);
+}
+
+
 
 static void	init(t_outfile **tmp, t_outfile **outfile, t_outfile **head)
 {
