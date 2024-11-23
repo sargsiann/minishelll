@@ -48,7 +48,7 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
 # Compiler settings
 CC = cc
-CFLAGS = -Ilibs/readline -Ilibs/libft #-Wall -Wextra -Werror
+CFLAGS = -Ilibs/readline -Ilibs/libft -Wall -Wextra -Werror
 INC = -I libs/libft
 LIBFT_LIB = libs/libft/libft.a
 
