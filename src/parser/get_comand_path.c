@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:23:42 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 17:24:22 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:51:34 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static	char	*search_for_exact(char	*command, char	*folder)
 		path = ft_gstrjoin(folders[i], command, 0, 0);
 		if (access(path, F_OK) == 0)
 		{
-			printf("path: %s\n", path);
 			free_folders(folders);
 			return (path);
 		}
