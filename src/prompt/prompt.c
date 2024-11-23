@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 18:58:26 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:48:12 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	logic(char *line, char **envp)
 {
 	t_token	*tokens;
 	void	*tree;
+	int		fd[2];
 
 	if (line[0] == '\0')
 		return ;
@@ -30,7 +31,8 @@ void	logic(char *line, char **envp)
 		return (ft_error(SYNTAX_ERROR, 1));
 	expansion(&tokens, envp);
 	tree = get_tree(tokens, envp, 0);
-	execution(tree);
+	print_tree(tree, 0);
+	execution(tree, fd, envp);
 	free_tree(tree);
 	free_tokens(&tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 17:17:47 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:33:58 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_command	*new_command(t_token *t, char **envp)
 	(void )envp;
 	command = malloc(sizeof(t_command));
 	command->type = COMMAND_ID;
+	if (t->type == EXE_ID)
+		command->word = ft_substr(t->word, 2, ft_strlen(t->word) - 2);
 	command->word = get_command_path(envp, t->word);
 	command->args = get_cmd_args(t->next);
 	command->infile = get_cmd_infile(t->next);

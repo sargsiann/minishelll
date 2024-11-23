@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 19:27:10 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 18:51:15 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:56:38 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ void	ft_mtx_free(char **mtx)
 void	ft_error(char *str, int status)
 {
 	// system("leaks minishell");
-	printf("%s%s%s\n", RED, str, RESET_COLOR);
+	printf("%s%s%s\n", RESET_COLOR, str, RESET_COLOR);
 	g_status = status;
 }
