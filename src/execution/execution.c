@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:47:54 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 20:56:16 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/24 11:46:33 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,17 @@ static	int	is_op(int n)
 // AND CASE
 // COMMAND EXEC
 
-void	execution(void *root, int fd[2], char **envp)
+void	execution(void *root, char **envp)
 {
 	t_operator	*op;
 	t_command	*com;
 	pid_t		pid;
+	int			fd[2];
 
 	op = root;
 	com = root;
+	fd[0] = -1;
+	fd[1] = -1;
 	if (!is_op(op->type))
 	{
 		pid = fork();
@@ -45,22 +48,21 @@ void	execution(void *root, int fd[2], char **envp)
 	{
 		if (op->type == PIPE_ID)
 		{
-			printf("PIPE\n");
 			pipe(fd);
-			execution(op->left, fd, envp);
-			execution(op->right, fd, envp);
+			execution(op->left, envp);
+			execution(op->right, envp);
 		}
 		else if (op->type == AND_ID)
 		{
-			execution(op->left, fd, envp);
+			execution(op->left, envp);
 			if (g_status == 0)
-				execution(op->right, fd, envp);
+				execution(op->right, envp);
 		}
 		else if (op->type == OR_ID)
 		{
-			execution(op->left, fd, envp);
+			execution(op->left, envp);
 			if (g_status != 0)
-				execution(op->right, fd, envp);
+				execution(op->right, envp);
 		}
 	}
 }

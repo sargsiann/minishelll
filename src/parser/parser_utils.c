@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 19:33:58 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:41:34 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ t_command	*new_command(t_token *t, char **envp)
 	command->type = COMMAND_ID;
 	if (t->type == EXE_ID)
 		command->word = ft_substr(t->word, 2, ft_strlen(t->word) - 2);
-	command->word = get_command_path(envp, t->word);
+	if (ft_strcmp(t->word, "unset") == 0
+		|| ft_strcmp(t->word, "export") == 0 || ft_strcmp(t->word, "cd") == 0)
+		command->word = ft_strdup(t->word);
+	else
+		command->word = get_command_path(envp, t->word);
 	command->args = get_cmd_args(t->next);
 	command->infile = get_cmd_infile(t->next);
 	command->here_doc = get_here_doc(t->next);

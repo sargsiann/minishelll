@@ -37,7 +37,7 @@ SRC_FILES = main.c \
 		parser.c cases.c parser_utils.c get_comand_info.c get_comand_path.c  free_tree.c\
 		) \
 		$(addprefix execution/, \
-		execution.c get_here_doc.c command_exec.c\
+		execution.c get_here_doc.c command_exec.c builtins.c\
 		)
 # Directories to create for object files
 OBJ_SUBDIRS = $(addprefix $(OBJ_DIR)/, \

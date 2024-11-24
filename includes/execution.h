@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 15:14:45 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 20:50:32 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:42:28 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@
 # include <sys/wait.h>
 
 
-void	execution(void *root, int fd[2], char **envp);
+void	execution(void *root, char **envp);
 void	get_from_hdoc(char **limiters);
 void	command_execution(t_command *command, int i, int o, char **envp);
+void	main_exec(t_command *command, char **envp);
+void	get_from_infile(char *infile);
+void	put_to_outfile(t_outfile *outfiles);
+void	unset(char ***envp, char *name);
+void	export(char ***envp, char *name, char *value);
+void	cd(char *path, char ***envp);
 
 #endif
