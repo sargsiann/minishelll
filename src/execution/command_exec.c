@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/24 12:42:40 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/26 21:51:19 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,16 @@ void	command_execution(t_command *command, int in, int out, char **envp)
 	if (out != -1 && command->outfiles == NULL)
 		dup2(out, 1);
 	put_to_outfile(command->outfiles);
-	if (ft_strcmp(command->word, "unset") == 0)
-		unset(&envp, command->args[0]);
-	else if (ft_strcmp(command->word, "export") == 0)
+	if (ft_strncmp(command->word, "unset", 6) == 0)
+	{
+		unset(&envp, command->args[1]);
+	}
+	else if (ft_strncmp(command->word, "export", 7) == 0)
 		export(&envp, command->args[0], command->args[1]);
 	else if (ft_strcmp(command->word, "cd") == 0)
-		cd(command->args[0], &envp);
+		cd(command->args[1], &envp);
+	else if (ft_strcmp(command->word, "env") == 0)
+		env(envp);
 	else
 		main_exec(command, envp);
 }

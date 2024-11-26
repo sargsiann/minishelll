@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 02:22:18 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/15 17:29:30 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/24 13:14:01 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	expand_var(t_token **head, char **envp)
 	vars = get_vars(envp);
 	tmp = *head;
 	tmp2 = vars;
-	if (ft_strcmp(tmp->word, "?") == 0)
+	if (ft_strcmp(tmp->word, "$?") == 0)
 	{
 		free(tmp->word);
 		tmp->word = ft_itoa(g_status);

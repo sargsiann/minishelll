@@ -6,11 +6,13 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/24 11:45:15 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/26 20:28:52 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+extern int	g_status;
 
 void	logic(char *line, char **envp)
 {
@@ -45,6 +47,14 @@ void	prompt(char **envp)
 	{
 		printf("%sMinishell:%s", GREEN, RESET_COLOR);
 		line = readline(" ");
+		if (ft_strcmp(line, "exit") == 0)
+			exit(g_status);
+		if (ft_strcmp(line, "history") == 0)
+		{
+			print_history();
+			free(line);
+			continue ;
+		}
 		if (line[0] == '\0')
 		{
 			free(line);
