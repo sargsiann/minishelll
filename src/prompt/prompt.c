@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 18:59:50 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/28 20:15:50 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ char	**matrix_dup(char **str)
 	new_str[i] = NULL;
 	return (new_str);
 }
+
+void	setup_signals(void)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
+	signal(SIGTSTP, signal_handler);
+}
+
+
 
 void	logic(char *line, char **envp)
 {
@@ -64,20 +73,18 @@ void	prompt(char **env)
 
 	line = NULL;
 	envp = matrix_dup(env);
+	setup_signals();
 	while (1)
 	{
 		printf("%sMinishell:%s", GREEN, RESET_COLOR);
 		line = readline(" ");
+		if (!line)
+			exit(0);
 		if (ft_strcmp(line, "exit") == 0)
 			exit(g_status);
 		if (ft_strcmp(line, "history") == 0)
 		{
 			print_history();
-			free(line);
-			continue ;
-		}
-		if (line[0] == '\0')
-		{
 			free(line);
 			continue ;
 		}
