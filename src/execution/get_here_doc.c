@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:04:22 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 20:30:05 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/28 20:42:25 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	get_from_hdoc(char **limiters)
 			write(1, "Warning: here-document ended unexpectedly (CTRL+D)\n", 52);
 			break;
 		}
-
 		// Check if input matches the current limiter
 		if (ft_strcmp(tmp, limiters[current_limiter]) == 0)
 		{
@@ -53,10 +52,10 @@ void	get_from_hdoc(char **limiters)
 				break;
 			continue;
 		}
-
 		// Append input to the accumulated line
 		tmp = ft_gstrjoin(tmp, "\n", 1, 0); // Add newline to the input
-		line = ft_gstrjoin(line, tmp, 1, 0); // Append to accumulated line
+		if (limiters[current_limiter + 1]) // Not the last limiter
+			tmp = ft_gstrjoin(tmp, "\n", 1, 0); // Add newline to the input
 		free(tmp);
 	}
 
