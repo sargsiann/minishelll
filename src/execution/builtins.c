@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/26 22:02:50 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:53:03 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	change_oldpwd(char ***envp, char *oldpwd)
 	{
 		if (ft_strncmp((*envp)[i], "OLDPWD=", 7) == 0)
 		{
-			//free((*envp)[i]);
 			(*envp)[i] = ft_strjoin("OLDPWD=", oldpwd);
 			break ;
 		}
@@ -64,7 +63,7 @@ void	print_history()
 }
 
 
-void	unset(char ***envp, char *name)
+char	**unset(char ***envp, char *name)
 {
 	int		i;
 	int		j;
@@ -78,7 +77,8 @@ void	unset(char ***envp, char *name)
 	i = 0;
 	while ((*envp)[i])
 	{
-		if (ft_strncmp((*envp)[i], name, ft_strlen(name)) != 0)
+		if (ft_strncmp((*envp)[i],
+			name, ft_strlen(name)) != 0)
 		{
 			new_envp[j] = ft_strdup((*envp)[i]);
 			j++;
@@ -86,7 +86,7 @@ void	unset(char ***envp, char *name)
 		i++;
 	}
 	new_envp[j] = NULL;
-	*envp = new_envp;
+	return (new_envp);
 }
 
 void	env(char **envp)
@@ -101,7 +101,7 @@ void	env(char **envp)
 	}
 }
 
-void	export(char ***envp, char *name, char *value)
+char	**export(char ***envp, char *name, char *value)
 {
 	int		i;
 	char	*new_var;
@@ -109,7 +109,7 @@ void	export(char ***envp, char *name, char *value)
 
 	i = 0;
 	if (!value || !name)
-		return ;
+		return envp;
 	while (*envp[i])
 		i++;
 	new_envp = malloc(sizeof(char *) * (i + 2));
@@ -120,8 +120,8 @@ void	export(char ***envp, char *name, char *value)
 		i++;
 	}
 	new_var = ft_strjoin(name, "=");
-	new_var = ft_strjoin(new_var, value);
+	new_var = ft_gstrjoin(new_var, value, 1, 1);
 	new_envp[i] = new_var;
 	new_envp[i + 1] = NULL;
-	*envp = new_envp;
+	return (new_envp);
 }

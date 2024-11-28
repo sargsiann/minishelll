@@ -6,13 +6,32 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/26 20:28:52 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:59:50 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int	g_status;
+
+char	**matrix_dup(char **str)
+{
+	int		i;
+	char	**new_str;
+
+	i = 0;
+	while (str[i])
+		i++;
+	new_str = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (str[i])
+	{
+		new_str[i] = ft_strdup(str[i]);
+		i++;
+	}
+	new_str[i] = NULL;
+	return (new_str);
+}
 
 void	logic(char *line, char **envp)
 {
@@ -38,11 +57,13 @@ void	logic(char *line, char **envp)
 	free_tokens(&tokens);
 }
 
-void	prompt(char **envp)
+void	prompt(char **env)
 {
-	char	*line;
+	char		*line;
+	static char	**envp;
 
 	line = NULL;
+	envp = matrix_dup(env);
 	while (1)
 	{
 		printf("%sMinishell:%s", GREEN, RESET_COLOR);
