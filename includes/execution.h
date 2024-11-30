@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 15:14:45 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 18:46:05 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/30 14:49:04 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 
-void	execution(void *root, char **envp);
+void	execution(void *root, char ***envp);
 void	get_from_hdoc(char **limiters);
-void	command_execution(t_command *command, int i, int o, char **envp);
+void	command_execution(t_command *command, int i, int o, char ***envp);
 void	main_exec(t_command *command, char **envp);
 void	get_from_infile(char *infile);
 void	put_to_outfile(t_outfile *outfiles);
 char	**unset(char ***envp, char *name);
-char	**export(char ***envp, char *name, char *value);
+char	**export(char ***envp, char *value);
 void	cd(char *path, char ***envp);
 void	print_history(void);
 void	env(char **envp);

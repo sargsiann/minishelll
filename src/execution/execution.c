@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:47:54 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 18:48:58 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/30 14:35:24 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,10 @@ static	int	is_op(int n)
 // AND CASE
 // COMMAND EXEC
 
-void	execution(void *root, char **envp)
+void	execution(void *root, char ***envp)
 {
 	t_operator	*op;
 	t_command	*com;
-	pid_t		pid;
 	int			fd[2];
 
 	op = root;
@@ -38,12 +37,7 @@ void	execution(void *root, char **envp)
 	fd[0] = -1;
 	fd[1] = -1;
 	if (!is_op(op->type))
-	{
-		pid = fork();
-		if (pid == 0)
-			command_execution(com, fd[0], fd[1], envp);
-		waitpid(pid, &g_status, 0);
-	}
+		command_execution(com, fd[0], fd[1], envp);
 	else
 	{
 		if (op->type == PIPE_ID)

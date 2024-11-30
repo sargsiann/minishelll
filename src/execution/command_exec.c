@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 20:48:26 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/30 14:49:10 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ void	put_to_outfile(t_outfile *outfiles)
 	}
 }
 
-void	command_execution(t_command *command, int in, int out, char **envp)
+void	command_execution(t_command *command, int in, int out, char ***envp)
 {
+	int	pid;
+
 	if (command->here_doc)
 		get_from_hdoc(command->here_doc);
 	if (command->infile)
@@ -79,15 +81,22 @@ void	command_execution(t_command *command, int in, int out, char **envp)
 		dup2(out, 1);
 	put_to_outfile(command->outfiles);
 	if (ft_strncmp(command->word, "unset", 6) == 0)
-		envp = unset(&envp, command->args[1]);
+		*envp = unset(envp, command->args[1]);
 	else if (ft_strncmp(command->word, "export", 7) == 0)
-		envp = export(&envp, command->args[0], command->args[1]);
+	{
+		*envp = export(envp, command->args[1]);
+	}
 	else if (ft_strcmp(command->word, "cd") == 0)
-		cd(command->args[1], &envp);
+		cd(command->args[1], envp);
 	else if (ft_strcmp(command->word, "env") == 0)
 	{
-		env(envp);
+		env(*envp);
 	}
 	else
-		main_exec(command, envp);
+	{
+		pid = fork();
+		if (pid == 0)
+			main_exec(command, *envp);
+		waitpid(pid, &g_status, 0);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 20:36:13 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/30 14:48:55 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,26 +101,25 @@ void	env(char **envp)
 	}
 }
 
-char	**export(char ***envp, char *name, char *value)
+char	**export(char ***envp, char *value)
 {
 	int		i;
 	char	*new_var;
 	char	**new_envp;
 
 	i = 0;
-	if (!value || !name)
-		return envp;
-	while (*envp[i])
+	if (!value || !ft_strchr(value, '='))
+		return (*envp);
+	while ((*envp)[i])
 		i++;
-	new_envp = malloc(sizeof(char *) * (i + 2));
+	new_envp = malloc(sizeof(char *) * (i + 1));
 	i = 0;
-	while (*envp[i])
+	while ((*envp)[i])
 	{
-		new_envp[i] = ft_strdup(*envp[i]);
+		new_envp[i] = ft_strdup((*envp)[i]);
 		i++;
 	}
-	new_var = ft_strjoin(name, "=");
-	new_var = ft_gstrjoin(new_var, value, 1, 1);
+	new_var = ft_strdup(value);
 	new_envp[i] = new_var;
 	new_envp[i + 1] = NULL;
 	return (new_envp);

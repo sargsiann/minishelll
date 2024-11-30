@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:04:22 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 20:42:25 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/30 13:47:52 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	hd_signal_handler(int signo)
 		exit(1); // Exit immediately on SIGINT during here-document
 	}
 	else if (signo == SIGQUIT)
-		; // Ignore SIGQUIT
+		;
 }
 
 void	get_from_hdoc(char **limiters)

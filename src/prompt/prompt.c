@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 20:15:50 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/11/30 14:26:16 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	setup_signals(void)
 
 
 
-void	logic(char *line, char **envp)
+void	logic(char *line, char ***envp)
 {
 	t_token	*tokens;
 	void	*tree;
@@ -58,8 +58,8 @@ void	logic(char *line, char **envp)
 	tokens = get_tokens(line);
 	if (validate_by_order(&tokens) == 0)
 		return (ft_error(SYNTAX_ERROR, 1));
-	expansion(&tokens, envp);
-	tree = get_tree(tokens, envp, 0);
+	expansion(&tokens, *envp);
+	tree = get_tree(tokens, *envp, 0);
 	print_tree(tree, 0);
 	execution(tree, envp);
 	free_tree(tree);
@@ -89,6 +89,6 @@ void	prompt(char **env)
 			continue ;
 		}
 		add_history(line);
-		logic(line, envp);
+		logic(line, &envp);
 	}
 }
