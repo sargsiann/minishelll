@@ -6,17 +6,20 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:04:22 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/30 13:47:52 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/01 15:37:35 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	g_signal = 0;
+
 void	hd_signal_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		write(1, "\n", 1);
-		exit(1); // Exit immediately on SIGINT during here-document
+		printf("%s%s%s", GREEN, "Minishell: ", RESET_COLOR);
+		g_signal = 1;
 	}
 	else if (signo == SIGQUIT)
 		;
@@ -29,40 +32,35 @@ void	get_from_hdoc(char **limiters)
 	int		current_limiter;
 
 	current_limiter = 0;
-	line = ft_strdup(""); // Initialize line to store accumulated input
+	line = ft_strdup("");
 	if (!line)
-		return; // Handle memory allocation failure
-	signal(SIGINT, hd_signal_handler); // Set up signal handler for SIGINT
-	signal(SIGQUIT, SIG_IGN);          // Ignore SIGQUIT
-	
+		return ;
+	signal(SIGINT, hd_signal_handler);
+	signal(SIGQUIT, hd_signal_handler);
 	while (limiters[current_limiter])
 	{
-		tmp = readline("> "); // Prompt user for input
-		if (!tmp) // Handle CTRL+D (EOF)
+		tmp = readline("> ");
+		if (g_signal)
+			break ;
+		if (!tmp)
 		{
-			write(1, "Warning: here-document ended unexpectedly (CTRL+D)\n", 52);
-			break;
+			write(1, "Warning: here-doc ended unexpectedly (CTRL+D)\n", 47);
+			break ;
 		}
-		// Check if input matches the current limiter
 		if (ft_strcmp(tmp, limiters[current_limiter]) == 0)
 		{
 			current_limiter++;
 			free(tmp);
-			if (!limiters[current_limiter]) // All limiters matched
-				break;
-			continue;
+			if (!limiters[current_limiter])
+				break ;
+			continue ;
 		}
-		// Append input to the accumulated line
-		tmp = ft_gstrjoin(tmp, "\n", 1, 0); // Add newline to the input
-		if (limiters[current_limiter + 1]) // Not the last limiter
-			tmp = ft_gstrjoin(tmp, "\n", 1, 0); // Add newline to the input
-		free(tmp);
+		tmp = ft_gstrjoin(tmp, "\n", 1, 0);
+		if (limiters[current_limiter + 1] == NULL)
+			line = ft_gstrjoin(line, tmp, 1, 1);
 	}
-
-	// Output the accumulated input
 	if (line && *line)
 		write(STDIN_FILENO, line, ft_strlen(line));
-
-	free(line); // Free accumulated input
+	free(line);
 }
 
