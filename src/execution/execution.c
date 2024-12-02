@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:47:54 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 18:54:16 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/02 23:29:01 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,59 @@
 
 extern int g_status;
 
-static int	is_op(int type)
+static int	is_op(void *op)
 {
+	int	type;
+
+	type = ((t_operator *)op)->type;
+	
 	return (type == PIPE_ID || type == AND_ID || type == OR_ID);
 }
 
-void	execute_pipe(int in_fd, t_operator *op)
+void	execute_right_cmd(t_command *com, int in, int out, char ***envp)
 {
-	pid_t		pid;
-	t_operator	*right;
-	int			fd[2];
+	pid_t	pid;
 
-	if (pipe(fd) == -1)
-		ft_error("Pipe error", 1);
 	pid = fork();
 	if (pid == 0)
+		command_execution(com, in, out, envp);
+	waitpid(pid, &g_status, 0);
+}
+
+void	execute_left_command(t_command *com, int in, int out, char ***envp)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+		command_execution(com, in, out, envp);
+}
+
+
+void	execute_pipe(t_operator *op, int outfile, char ***envp)
+{
+	int fd[2];
+
+	pipe(fd);
+	if (!is_op(op->left))
 	{
+		execute_left_command(op->left, -1, fd[1], envp);
+		close(fd[1]);
+		execute_right_cmd(op->right, fd[0], outfile, envp);
 		close(fd[0]);
-		if (in_fd != -1)
-		{
-			dup2(in_fd, 0);
-			close(in_fd);
-		}
-		if (op->type == PIPE_ID)
-			command_execution((t_command *)op->right, in_fd, fd[1], NULL);
-		else if (op->type == COMMAND_ID)
-			command_execution((t_command *)op, in_fd, -1, NULL);
 	}
 	else
 	{
+		execute_pipe(op->left, fd[1], envp);
 		close(fd[1]);
-		if (op->left)
-			execute_pipe(fd[0], op->left);
-		else
-		{
-			close(in_fd);
-			close(fd[0]);
-			waitpid(pid, &g_status, 0);
-		}
+		execute_right_cmd(op->right, fd[0], outfile, envp);
+		close(fd[0]);
 	}
 }
 
 
-
 // Основная функция для выполнения команд с пайпами
-void execution(void *root, char ***envp, int *fd)
+void execution(void *root, char ***envp)
 {
     t_operator *op;
     t_command *com;
@@ -67,28 +75,28 @@ void execution(void *root, char ***envp, int *fd)
     op = root;
     com = root;
 
-    if (!is_op(op->type)) // Если это команда, а не оператор
+    if (!is_op(op)) // Если это команда, а не оператор
     {
 		pid = fork();
 		if (pid == 0)
-			command_execution(com, fd[0], fd[1], envp);
+			command_execution(com, -1, -1, envp);
 		waitpid(pid, &g_status, 0);
 	}
     else
     {
 		if (op->type == PIPE_ID) // Если это оператор пайпа (|)
-			execute_pipe(-1, op);
+			execute_pipe(op,-1, envp);
         if (op->type == AND_ID) // Если это оператор И (&&)
         {
-            execution(op->left, envp, fd);
+            execution(op->left, envp);
             if (g_status == 0)
-                execution(op->right, envp, fd);
+                execution(op->right, envp);
         }
         else if (op->type == OR_ID) // Если это оператор ИЛИ (||)
         {
-            execution(op->left, envp, fd);
+            execution(op->left, envp);
             if (g_status != 0)
-                execution(op->right, envp, fd);
+                execution(op->right, envp);
         }
     }
 }

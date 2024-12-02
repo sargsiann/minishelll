@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 17:29:56 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/02 22:03:04 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	logic(char *line, char ***envp)
 {
 	t_token	*tokens;
 	void	*tree;
-	int		fd[2] = {-1, -1};
-
+	
 	if (line[0] == '\0')
 		return ;
 	if (check_for_parenthesis(line) == 0)
@@ -62,7 +61,7 @@ void	logic(char *line, char ***envp)
 	expansion(&tokens, *envp);
 	tree = get_tree(tokens, *envp, 0);
 	print_tree(tree, 0);
-	execution(tree, envp, fd);
+	execution(tree, envp);
 	free_tree(tree);
 	free_tokens(&tokens);
 }

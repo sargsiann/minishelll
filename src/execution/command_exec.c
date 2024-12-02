@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 18:55:22 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:44:11 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,19 @@ void	put_to_outfile(t_outfile *outfiles)
 
 void	duping_inpipe(int in)
 {
-	dup2(in, 0);
+	dup2(in, STDIN_FILENO);
 	close(in);
 }
 
 
 void	duping_outpipe(int out)
 {
-	dup2(out, 1);
+	dup2(out, STDOUT_FILENO);
 	close(out);
 }
 
 void	command_execution(t_command *command, int in, int out, char ***envp)
 {
-	int	pid;
-
 	if (command->here_doc)
 		get_from_hdoc(command->here_doc);
 	if (command->infile)

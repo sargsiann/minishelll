@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 15:14:45 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 17:17:52 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:57:04 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 
-void	execution(void *root, char ***envp, int *fd);
+void	execution(void *root, char ***envp);
 void	get_from_hdoc(char **limiters);
 void	command_execution(t_command *command, int i, int o, char ***envp);
 void	main_exec(t_command *command, char **envp);
