@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 19:30:58 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 20:18:07 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 {
 	int	pid;
 
+	if (!command->word)
+	{
+		ft_error(UNKNOWN_COMMAND, COMMAND_NOT_FOUND_STATUS);
+		return ;
+	}
 	if (ft_strncmp(command->word, "unset", 6) == 0)
 		*envp = unset(envp, command->args[1]);
 	else if (ft_strncmp(command->word, "export", 7) == 0)
@@ -93,7 +98,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 	else if (ft_strcmp(command->word, "env") == 0)
 		env(*envp);
 	else if (ft_strcmp(command->word, "exit") == 0)
-		my_exit(ft_atoi(command->args[1]));
+		exit(ft_atoi(command->args[1]));
 	else
 	{
 		pid = fork();

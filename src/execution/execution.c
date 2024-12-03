@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:47:54 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 18:50:39 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 20:05:44 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,7 @@ void execution(void *root, char ***envp)
     com = root;
 
     if (!is_op(op)) // Если это команда, а не оператор
-    {
 		command_execution(com, -1, -1, envp);
-	}
     else
     {
 		if (op->type == PIPE_ID) // Если это оператор пайпа (|)

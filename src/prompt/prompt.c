@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 19:29:19 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 20:05:23 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	logic(char *line, char ***envp)
 	free_tree(tree);
 	free_tokens(&tokens);
 }
-			exit(g_status);
 
 void	prompt(char **env)
 {
