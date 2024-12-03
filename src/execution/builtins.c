@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 17:30:14 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:29:03 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,19 @@ void	cd(char *path, char ***envp)
 	char	*cur_path;
 
 	cur_path = getcwd(NULL, 0);
-
+	if (!path)
+		path = ft_strdup(getenv("HOME"));
 	if (chdir(path) == -1)
 	{
 		ft_error(NO_FILE, NO_FILE_STATUS);
 		exit(NO_FILE_STATUS);
 	}
 	change_oldpwd(envp, cur_path);
+}
+
+void	my_exit(int	status)
+{
+	exit(status);
 }
 
 void	print_history()

@@ -6,18 +6,13 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:47:54 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 23:40:07 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:50:39 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int g_status;
-
-static int	is_last_cmd(t_command *com)
-{
-	
-}
 
 static int	is_op(void *op)
 {
@@ -30,20 +25,12 @@ static int	is_op(void *op)
 
 void	execute_right_cmd(t_command *com, int in, int out, char ***envp)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-		command_execution(com, in, out, envp);
+	command_execution(com, in, out, envp);
 }
 
 void	execute_left_command(t_command *com, int in, int out, char ***envp)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-		command_execution(com, in, out, envp);
+	command_execution(com, in, out, envp);
 }
 
 
@@ -81,10 +68,7 @@ void execution(void *root, char ***envp)
 
     if (!is_op(op)) // Если это команда, а не оператор
     {
-		pid = fork();
-		if (pid == 0)
-			command_execution(com, -1, -1, envp);
-		waitpid(pid, &g_status, 0);
+		command_execution(com, -1, -1, envp);
 	}
     else
     {

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 19:44:11 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:30:58 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,8 @@ void	duping_outpipe(int out)
 
 void	command_execution(t_command *command, int in, int out, char ***envp)
 {
-	if (command->here_doc)
-		get_from_hdoc(command->here_doc);
-	if (command->infile)
-		get_from_infile(command->infile);
-	if (in != -1 && command->infile == NULL)
-		duping_inpipe(in);
-	if (out != -1 && command->outfiles == NULL)
-		duping_outpipe(out);
-	put_to_outfile(command->outfiles);
+	int	pid;
+
 	if (ft_strncmp(command->word, "unset", 6) == 0)
 		*envp = unset(envp, command->args[1]);
 	else if (ft_strncmp(command->word, "export", 7) == 0)
@@ -99,7 +92,26 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 		cd(command->args[1], envp);
 	else if (ft_strcmp(command->word, "env") == 0)
 		env(*envp);
+	else if (ft_strcmp(command->word, "exit") == 0)
+		my_exit(ft_atoi(command->args[1]));
 	else
-		main_exec(command, *envp);
-	exit(0);
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			if (command->here_doc)
+				get_from_hdoc(command->here_doc);
+			if (command->infile)
+				get_from_infile(command->infile);
+			if (in != -1 && command->infile == NULL)
+				duping_inpipe(in);
+			if (out != -1 && command->outfiles == NULL)
+				duping_outpipe(out);
+			put_to_outfile(command->outfiles);
+			main_exec(command, *envp);
+		}
+		close(in);
+		close(out);
+		waitpid(pid, &g_status, 0);
+	}
 }

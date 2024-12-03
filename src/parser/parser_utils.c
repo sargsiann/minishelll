@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 21:28:05 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:31:14 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_command	*new_command(t_token *t, char **envp)
 		command->word = ft_strdup("/usr/bin/bash");
 	else if (ft_strcmp(t->word, "unset") == 0
 		|| ft_strcmp(t->word, "export") == 0
-		|| ft_strcmp(t->word, "cd") == 0 || ft_strcmp(t->word, "env") == 0)
+		|| ft_strcmp(t->word, "cd") == 0
+		|| ft_strcmp(t->word, "env") == 0 || ft_strcmp(t->word, "exit") == 0)
 		command->word = ft_strdup(t->word);
 	else
 		command->word = get_command_path(envp, t->word);
