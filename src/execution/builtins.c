@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 20:18:26 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:34:49 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	env(char **envp)
 		printf("%s\n", envp[i]);
 		i++;
 	}
+	exit(0);
 }
 
 char	**export(char ***envp, char *value)

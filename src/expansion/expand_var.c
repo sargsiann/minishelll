@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 02:22:18 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 18:54:22 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:21:25 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,14 +107,11 @@ void	expand_var(t_token **head, char **envp)
 		free(tmp->word);
 		tmp->word = ft_itoa(g_status);
 		return ;
-	}
-	while (tmp)
-	{
-		if (is_simple_var(tmp))
-			expand_simple_var(tmp, tmp2);
-		else
-			expand_complex_var(tmp, tmp2);
-		tmp = tmp->next;
-	}
+	}	
+	if (is_simple_var(tmp))
+		expand_simple_var(tmp, tmp2);
+	else
+		expand_complex_var(tmp, tmp2);
+	tmp = tmp->next;
 	free_vars(&vars);
 }

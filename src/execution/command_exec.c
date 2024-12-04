@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 20:18:07 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:34:38 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,20 @@ void	duping_outpipe(int out)
 	close(out);
 }
 
+int 	is_digital(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	command_execution(t_command *command, int in, int out, char ***envp)
 {
 	int	pid;
@@ -95,10 +109,12 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 		*envp = export(envp, command->args[1]);
 	else if (ft_strcmp(command->word, "cd") == 0)
 		cd(command->args[1], envp);
-	else if (ft_strcmp(command->word, "env") == 0)
-		env(*envp);
 	else if (ft_strcmp(command->word, "exit") == 0)
+	{
+		if (!is_digital(command->args[1]))
+			ft_error("Minishell: exit: numeric argument required", 255);
 		exit(ft_atoi(command->args[1]));
+	}
 	else
 	{
 		pid = fork();
@@ -112,6 +128,10 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 				duping_inpipe(in);
 			if (out != -1 && command->outfiles == NULL)
 				duping_outpipe(out);
+			if (ft_strcmp(command->word, "env") == 0)
+			{
+				env(*envp);
+			}
 			put_to_outfile(command->outfiles);
 			main_exec(command, *envp);
 		}

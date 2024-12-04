@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:43:34 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/15 17:15:56 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/03 22:33:03 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	parse_tokens(char *line, char **metas, t_token **head)
 		{
 			tmp = new_token(ft_substr(line, i, get_word_size(line, i, metas)),
 					ARGUMENT_ID);
-			add_token_end(head, tmp);
+			add_token_end(head, tmp);			
 			i += get_word_size(line, i, metas) - 1;
 		}
 		i++;

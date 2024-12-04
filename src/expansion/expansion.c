@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 01:44:24 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/28 18:54:27 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:22:31 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,25 @@ int	is_in_quotes(char *str, char quote, int index)
 	return (1);
 }
 
+int	is_double_one_quote(char *str, int index)
+{
+	int	i;
+	int count;
+
+	i = index;
+	count = 0;
+	printf("str = %s\n", str);
+	while (str[i])
+	{
+		if (str[i] == 39)
+			count++;
+		i++;
+	}
+	if (count == 1)
+		return (0);
+	return (1);
+}
+
 int	is_expansable(t_token *token, char c)
 {
 	char	*str;
@@ -37,8 +56,6 @@ int	is_expansable(t_token *token, char c)
 
 	str = token->word;
 	i = 0;
-	if (str[0] == c)
-		return (1);
 	while (str[i])
 	{
 		if (str[i] == 39 && is_in_quotes(str, 34, i) == 0)
@@ -61,6 +78,11 @@ void	expansion(t_token **head, char **envp)
 	tmp = *head;
 	while (tmp)
 	{
+		if (!tmp)
+			break ;
+		if (ft_strcmp(tmp->word, "$") == 0 
+			&& ft_strlen(tmp->word) == 1)
+			break ;
 		if (is_expansable(tmp, '$'))
 			expand_var(&tmp, envp);
 		if (has_quotes(tmp->word))

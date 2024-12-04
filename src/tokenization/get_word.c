@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 20:38:47 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/03 19:12:28 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:21:17 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	is_word(char *line, int index, char **metas)
 		return (0);
 	if (index == 0)
 		return (1);
+	if (line[index] == 34 || line[index] == 39)
+	{
+		return (1);
+	}
 	if (index != 0 && (ft_isspace(line[index - 1])
 			|| is_meta(line + index - 1, metas)))
 		return (1);
@@ -37,8 +41,11 @@ int	get_word_size(char *line, int index, char **metas)
 		while (line[index + i] && line[index + i] != line[index])
 			i++;
 	}
+	i++;
 	while (line[index + i] && !ft_isspace(line[index + i]))
 	{
+		if (line[index + i] == 34 || line[index + i] == 39)
+			return i;
 		if (is_meta(line + index + i, metas))
 			break ;
 		i++;
