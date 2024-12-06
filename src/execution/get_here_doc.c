@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:04:22 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 19:57:53 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:30:33 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@ void	hd_signal_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		printf("%s%s%s", GREEN, "Minishell: ", RESET_COLOR);
 		g_signal = 1;
 	}
 	else if (signo == SIGQUIT)
 		;
 }
 
-void	get_from_hdoc(char **limiters)
+void	get_from_hdoc(char **limiters, int fd)
 {
 	char	*line;
 	char	*tmp;
@@ -41,7 +40,7 @@ void	get_from_hdoc(char **limiters)
 	{
 		tmp = readline("> ");
 		if (g_signal)
-			break ;
+			return ;
 		if (!tmp)
 		{
 			write(1, "Warning: here-doc ended unexpectedly (CTRL+D)\n", 47);
@@ -60,7 +59,7 @@ void	get_from_hdoc(char **limiters)
 			line = ft_gstrjoin(line, tmp, 1, 1);
 	}
 	if (line && *line)
-		write(STDIN_FILENO, line, ft_strlen(line));
+		write(fd, line, ft_strlen(line));
 	free(line);
 }
 

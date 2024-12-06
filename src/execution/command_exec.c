@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/04 21:34:38 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:33:22 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int 	is_digital(char *str)
 void	command_execution(t_command *command, int in, int out, char ***envp)
 {
 	int	pid;
+	int	fd;
+	int fd2;
 
 	if (!command->word)
 	{
@@ -121,7 +123,14 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 		if (pid == 0)
 		{
 			if (command->here_doc)
-				get_from_hdoc(command->here_doc);
+			{
+				fd = open("tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				get_from_hdoc(command->here_doc, fd);
+				close(fd);
+				fd = open("tmp", O_RDONLY);
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
 			if (command->infile)
 				get_from_infile(command->infile);
 			if (in != -1 && command->infile == NULL)
@@ -129,9 +138,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 			if (out != -1 && command->outfiles == NULL)
 				duping_outpipe(out);
 			if (ft_strcmp(command->word, "env") == 0)
-			{
 				env(*envp);
-			}
 			put_to_outfile(command->outfiles);
 			main_exec(command, *envp);
 		}
