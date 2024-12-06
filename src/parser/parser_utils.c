@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 19:31:14 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:38:54 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ t_command	*new_command(t_token *t, char **envp)
 	(void )envp;
 	command = malloc(sizeof(t_command));
 	command->type = COMMAND_ID;
-	if (t->type == EXE_ID)
-		command->word = ft_strdup("/usr/bin/bash");
-	else if (ft_strcmp(t->word, "unset") == 0
+	if (ft_strcmp(t->word, "unset") == 0
 		|| ft_strcmp(t->word, "export") == 0
 		|| ft_strcmp(t->word, "cd") == 0
 		|| ft_strcmp(t->word, "env") == 0 || ft_strcmp(t->word, "exit") == 0)

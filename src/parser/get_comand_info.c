@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:59:55 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 16:44:01 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:38:24 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_args_size(t_token *t)
 		size++;
 	else
 		t = t->next;
-	while (t && t->type != COMMAND_ID)
+	while (t && t->type != COMMAND_ID && t->type != EXE_ID)
 	{
 		if (t->type == ARGUMENT_ID && t->word)
 			size++;
@@ -37,10 +37,7 @@ char	**get_cmd_args(t_token *t)
 	int		i;
 
 	args = malloc(sizeof(char *) * (get_args_size(t) + 1));
-	if (t->type == EXE_ID)
-		args[0] = ft_strdup("/usr/bin/bash");
-	else
-		args[0] = ft_strdup(t->word);
+	args[0] = ft_strdup(t->word);
 	tmp = t->next;
 	i = 1;
 	while (tmp && tmp->type != COMMAND_ID

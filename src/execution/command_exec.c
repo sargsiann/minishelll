@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 18:33:22 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:37:40 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 	int	fd;
 	int fd2;
 
+	printf("command->word = %s\n", command->word);
 	if (!command->word)
 	{
 		ft_error(UNKNOWN_COMMAND, COMMAND_NOT_FOUND_STATUS);
@@ -130,6 +131,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 				fd = open("tmp", O_RDONLY);
 				dup2(fd, STDIN_FILENO);
 				close(fd);
+				unlink("tmp");
 			}
 			if (command->infile)
 				get_from_infile(command->infile);
