@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 17:59:55 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/02 17:25:43 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:32:32 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	get_args_size(t_token *t)
 		t = t->next;
 	while (t && t->type != COMMAND_ID)
 	{
-		if (t->type == ARGUMENT_ID)
+		if (t->type == ARGUMENT_ID && t->word)
 			size++;
 		t = t->next;
 	}
@@ -46,7 +46,7 @@ char	**get_cmd_args(t_token *t)
 	while (tmp && tmp->type != COMMAND_ID
 		&& tmp->type != EXE_ID)
 	{
-		if (tmp->type == ARGUMENT_ID)
+		if (tmp->type == ARGUMENT_ID && tmp->word)
 		{
 			args[i] = ft_strdup(tmp->word);
 			i++;

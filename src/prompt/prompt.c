@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 15:52:46 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:26:37 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,6 @@ void	logic(char *line, char ***envp)
 	free_tokens(&tokens);
 }
 
-void	semicolon_case(char *line, char **envp)
-{
-	char	**commands;
-	int		i;
-
-	i = 0;
-	commands = ft_split(line, ';', 0);
-	while (commands[i])
-	{
-		logic(commands[i], &envp);
-		i++;
-	}
-	ft_mtx_free(commands);
-}
-
 void	prompt(char **env)
 {
 	char		*line;
@@ -99,7 +84,7 @@ void	prompt(char **env)
 			exit(g_status);
 		add_history(line);
 		if (ft_strchr(line, ';'))
-			semicolon_case(line, envp);
+			semicolon_case(line, &envp);
 		else
 			logic(line, &envp);
 	}

@@ -17,7 +17,7 @@ SRC_FILES = main.c \
 		 utils.c \
 	    ) \
 	    $(addprefix prompt/, \
-	    prompt.c prompt_utils.c signal.c \
+	    prompt.c prompt_utils.c signal.c semicolon_case.c\
 	    ) \
 	    $(addprefix tokenization/, \
 	    tokenization.c token_utils.c identifiers.c \

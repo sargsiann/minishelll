@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 01:44:24 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 15:52:36 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:31:37 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	is_expansable(t_token *token, char c)
 
 	str = token->word;
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == 39 && is_in_quotes(str, 34, i) == 0)

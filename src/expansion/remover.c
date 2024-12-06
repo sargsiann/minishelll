@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:59:25 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/04 20:27:33 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:31:17 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,10 @@ void	expand_quotes(t_token **token, int type)
 			end--;
 		}
 		remove++;
+	}
+	if (tmp->word[0] == 0)
+	{
+		free(tmp->word);
+		tmp->word = NULL;
 	}
 }
