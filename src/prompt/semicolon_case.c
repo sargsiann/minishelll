@@ -6,28 +6,36 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:03:18 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 16:23:37 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 22:09:32 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int		is_in_quote(char *line, int index)
+int is_symbol_in_quotes(char *line, char symbol)
 {
-	int	i;
-	int	count;
+    int i = 0;
+    int single_quote = 0; // Tracks single quote state
+    int double_quote = 0; // Tracks double quote state
 
-	i = 0;
-	count = 0;
-	while (i < index)
-	{
-		if (line[i] == 34)
-			count++;
-		i++;
-	}
-	if (count % 2 == 0)
-		return (0);
-	return (1);
+    while (line[i])
+    {
+        if (line[i] == '\'' && double_quote == 0) // Toggle single quote if not inside double quotes
+            single_quote = !single_quote;
+        else if (line[i] == '"' && single_quote == 0) // Toggle double quote if not inside single quotes
+            double_quote = !double_quote;
+
+        if (line[i] == symbol) // Found the symbol
+        {
+            if (single_quote || double_quote) // Inside a quoted section
+                return 1;
+            else
+                return 0; // Outside quotes
+        }
+        i++;
+    }
+
+    return -1; // Symbol not found in the string
 }
 
 void	semicolon_case(char *line, char ***envp)
@@ -41,7 +49,7 @@ void	semicolon_case(char *line, char ***envp)
 	j = 0;
 	while (line[i])
 	{
-		if (line[i] == ';' && !is_in_quote(line, i))
+		if (line[i] == ';' && is_symbol_in_quotes(line, ';') == 0)
 		{
 			tmp = ft_substr(line, j, i - j);
 			mtx = ft_split(tmp, ' ', 0);

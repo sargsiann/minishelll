@@ -3,34 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 18:44:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/14 17:34:39 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 22:01:10 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	check_for_quotes(char *line, int limiter)
-{
-	int	i;
-	int	flag;
+#include <stdio.h>
 
-	i = 0;
-	flag = 0;
-	while (line[i])
-	{
-		if (line[i] == limiter)
-			flag++;
-		i++;
-	}
-	if (flag % 2 == 0)
-		return (1);
-	if (flag % 2 != 0)
-		return (0);
-	return (0);
+int check_for_quotes(char *line)
+{
+    int i = 0;
+    int single_quote = 0; // Tracks single quote state
+    int double_quote = 0; // Tracks double quote state
+
+    while (line[i])
+    {
+        if (line[i] == '\'' && double_quote == 0) // Toggle single quote if not inside double quotes
+            single_quote = !single_quote;
+        else if (line[i] == '"' && single_quote == 0) // Toggle double quote if not inside single quotes
+            double_quote = !double_quote;
+        i++;
+    }
+    // Check if all quotes are properly closed
+    if (single_quote || double_quote)
+        return (0); // Invalid: Unmatched quotes
+    return (1); // Valid: All quotes matched
 }
+
 
 int	check_for_parenthesis(char *line)
 {

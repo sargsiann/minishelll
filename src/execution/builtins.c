@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 18:25:56 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 21:12:24 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 // FIX UNSET AND EXPORT
 
-void	change_oldpwd(char ***envp, char *oldpwd)
+void	change_oldpwd(char ***envp, char *oldpwd, char *cur_path)
 {
 	int	i;
 
@@ -24,10 +24,9 @@ void	change_oldpwd(char ***envp, char *oldpwd)
 	while ((*envp)[i])
 	{
 		if (ft_strncmp((*envp)[i], "OLDPWD=", 7) == 0)
-		{
 			(*envp)[i] = ft_strjoin("OLDPWD=", oldpwd);
-			break ;
-		}
+		if (ft_strncmp((*envp)[i], "PWD=", 4) == 0)
+			(*envp)[i] = ft_strjoin("PWD=", cur_path);
 		i++;
 	}
 }
@@ -35,13 +34,15 @@ void	change_oldpwd(char ***envp, char *oldpwd)
 void	cd(char *path, char ***envp)
 {
 	char	*cur_path;
+	char	*old_path;
 
-	cur_path = getcwd(NULL, 0);
+	old_path = getcwd(NULL, 0);
 	if (!path)
 		path = ft_strdup(getenv("HOME"));
 	if (chdir(path) == -1)
 		ft_error(NO_FILE, NO_FILE_STATUS);
-	change_oldpwd(envp, cur_path);
+	cur_path = getcwd(NULL, 0);
+	change_oldpwd(envp, old_path, cur_path);
 }
 
 void	my_exit(int	status)

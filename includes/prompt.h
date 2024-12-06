@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 00:04:31 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 16:23:45 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 22:32:42 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@
 # define UNCLOSED_Q ""
 
 void	prompt(char **envp);
-int		check_for_quotes(char *line, int limiter);
+int		check_for_quotes(char *line);
 int		check_for_parenthesis(char *line);
 void	signal_handler(int signo);
 void	logic(char *line, char ***envp);
 void	semicolon_case(char *line, char ***envp);
+int		is_symbol_in_quotes(char *line, char symbol);
 
 #endif

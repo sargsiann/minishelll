@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 17:18:17 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 22:18:19 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,16 @@ void	logic(char *line, char ***envp)
 		return ;
 	if (check_for_parenthesis(line) == 0)
 		return (ft_error(UNCLOSING_BRACE, 1));
-	if (check_for_quotes(line, 34) == 0)
-		return (ft_error(UNCLOSING_DQUOTE, 1));
-	if (check_for_quotes(line, 39) == 0)
+	if (check_for_quotes(line) == 0)
 		return (ft_error(UNCLOSING_QUOTE, 1));
 	tokens = get_tokens(line);
 	if (validate_by_order(&tokens) == 0)
 		return (ft_error(SYNTAX_ERROR, 1));
 	expansion(&tokens, *envp);
 	tree = get_tree(tokens, *envp, 0);
-	// print_tokens(&tokens);
 	//print_tree(tree, 0);
-	
 	execution(tree, envp);
+	// print_tokens(&tokens);
 	free_tree(tree);
 	free_tokens(&tokens);
 }
