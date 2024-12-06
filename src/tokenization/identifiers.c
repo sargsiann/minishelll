@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   identifiers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:10:36 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/09 17:39:39 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:42:27 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	meta_identifier(char *line, int len)
 			return (OPEN_BRACE_ID);
 		if (line[0] == ')')
 			return (CLOSE_BRACE_ID);
+		if (line[0] == ';')
+			return (SEMICOLON_ID);
 	}
 	if (ft_strncmp(line, "||", 2) == 0)
 		return (OR_ID);
@@ -64,7 +66,7 @@ static int	is_control(t_token *tmp)
 {
 	if (tmp->type == PIPE_ID || tmp->type == AND_ID
 		|| tmp->type == OR_ID || tmp->type == OPEN_BRACE_ID
-		|| tmp->type == CLOSE_BRACE_ID)
+		|| tmp->type == CLOSE_BRACE_ID || tmp->type == SEMICOLON_ID)
 		return (1);
 	return (0);
 }

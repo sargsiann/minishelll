@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:42:43 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/14 17:24:29 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:40:44 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define APPENDFILE_ID 13 
 # define ARGUMENT_ID 15
 # define DELIMITER_ID 16
+# define SEMICOLON_ID 17
 
 typedef struct s_token
 {

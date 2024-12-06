@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:43:34 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 22:33:03 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:39:08 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_token	*get_tokens(char *line)
 	t_token	*head;
 
 	head = NULL;
-	metas = ft_split(" ( ) | || && > < >> << ", 32, 0);
+	metas = ft_split(" ( ) | || && > < >> << ;", 32, 0);
 	parse_tokens(line, metas, &head);
 	token_identifier(&head);
 	ft_mtx_free(metas);

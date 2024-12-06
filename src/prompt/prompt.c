@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 20:41:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/04 19:48:40 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:52:46 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,27 @@ void	logic(char *line, char ***envp)
 		return (ft_error(SYNTAX_ERROR, 1));
 	expansion(&tokens, *envp);
 	tree = get_tree(tokens, *envp, 0);
-	// print_tree(tree, 0);
+	// print_tokens(&tokens);
+	//print_tree(tree, 0);
+	
 	execution(tree, envp);
 	free_tree(tree);
 	free_tokens(&tokens);
+}
+
+void	semicolon_case(char *line, char **envp)
+{
+	char	**commands;
+	int		i;
+
+	i = 0;
+	commands = ft_split(line, ';', 0);
+	while (commands[i])
+	{
+		logic(commands[i], &envp);
+		i++;
+	}
+	ft_mtx_free(commands);
 }
 
 void	prompt(char **env)
@@ -80,13 +97,10 @@ void	prompt(char **env)
 		line = readline(" ");
 		if (!line)
 			exit(g_status);
-		if (ft_strcmp(line, "history") == 0)
-		{
-			print_history();
-			free(line);
-			continue ;
-		}
 		add_history(line);
-		logic(line, &envp);
+		if (ft_strchr(line, ';'))
+			semicolon_case(line, envp);
+		else
+			logic(line, &envp);
 	}
 }
