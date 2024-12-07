@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 20:38:47 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 21:16:09 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/07 21:00:41 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ int	get_word_size(char *line, int index, char **metas)
 	i++;
 	while (line[index + i] && !ft_isspace(line[index + i]))
 	{
+		if (line[index + i] == 34 || line[index + i] == 39)
+		{
+			i += go_head(line, line[index + i], index + i + 1);
+			if (line[index + i] == '\0')
+				break ;
+		}
 		if (is_meta(line + index + i, metas))
 			break ;
 		i++;

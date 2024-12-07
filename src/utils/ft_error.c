@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 19:27:10 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/03 18:22:34 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/07 19:25:10 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_mtx_free(char **mtx)
 
 void	ft_error(char *str, int status)
 {
-	printf("%s%s%s\n", RESET_COLOR, str, RESET_COLOR);
+	write(2, "Minishell: ", 11);
+	write(2, str, ft_strlen(str));
 	g_status = status;
 }

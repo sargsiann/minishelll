@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 02:36:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/11 22:26:55 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/07 17:19:02 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*replacer(char *line, int i, int len, t_var *vars)
 	char	*value;
 	char	*name;
 
+	if (len == 0)
+		return (line);
 	bef = ft_substr(line, 0, i);
 	name = ft_substr(line, i + 1, len);
 	value = find_var(name, vars);

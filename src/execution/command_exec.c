@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 20:59:51 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/07 20:29:01 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 	int	pid;
 	int	fd;
 	int fd2;
+	int	i;
 
 	if (!command->word)
 	{
@@ -108,12 +109,16 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 	if (ft_strncmp(command->word, "unset", 6) == 0)
 		*envp = unset(envp, command->args[1]);
 	else if (ft_strncmp(command->word, "export", 7) == 0)
-		*envp = export(envp, command->args[1]);
+	{
+		i = 1;
+		while (command->args[i])
+			*envp = export(envp, command->args[i++]);
+	}
 	else if (ft_strcmp(command->word, "cd") == 0)
 		cd(command->args[1], envp);
 	else if (ft_strcmp(command->word, "exit") == 0)
 	{
-		if (!is_digital(command->args[1]))
+		if (check_exit_args(command->args) == 0)
 			ft_error("Minishell: exit: numeric argument required", 255);
 		exit(ft_atoi(command->args[1]));
 	}

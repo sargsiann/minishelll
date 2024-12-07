@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 02:22:18 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/04 20:21:25 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/07 18:41:44 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,24 @@ int	get_var_len(char *line)
 	return (i);
 }
 
+int		is_in_one_quotes(char *line, int c, int i)
+{
+	int	quotes;
+
+	quotes = 0;
+	if (i == 0)
+		return (0);
+	while (i >= 0)
+	{
+		if (line[i] == c)
+			quotes++;
+		i--;
+	}
+	if (quotes % 2 == 0)
+		return (0);
+	return (1);
+}
+
 void	expand_complex_var(t_token *token, t_var *vars)
 {
 	t_var	*tmp;
@@ -84,14 +102,20 @@ void	expand_complex_var(t_token *token, t_var *vars)
 	tmp = vars;
 	while (token->word[i])
 	{
-		if (token->word[i] == '$')
+		if (token->word[i] == '$' 
+			&& (is_in_one_quotes(token->word, 39, i) == 0
+			|| is_in_one_quotes(token->word, 34, i) == 1))
 		{
-			var_len = get_var_len(token->word + i + 1);
-			token->word = replacer(token->word, i, var_len, tmp);
+			if (token->word[i + 1] == '?')
+				var_len = 1;
+			else
+				var_len = get_var_len(token->word + i + 1);
+			token->word = replacer(token->word, i, var_len, tmp);		
 		}
 		i++;
 	}
 }
+
 
 void	expand_var(t_token **head, char **envp)
 {

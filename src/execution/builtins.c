@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 21:12:24 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/07 20:23:01 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ char	**unset(char ***envp, char *name)
 
 	i = 0;
 	j = 0;
+	if (!name)
+		return (*envp);
 	while ((*envp)[i])
 		i++;
 	new_envp = malloc(sizeof(char *) * i);
@@ -113,7 +115,12 @@ char	**export(char ***envp, char *value)
 	char	**new_envp;
 
 	i = 0;
-	if (!value || !ft_strchr(value, '='))
+	if (check_var(value) == 0)
+	{
+		ft_error("not a valid identifier", 1);
+		return (*envp);
+	}
+	if (!value)
 		return (*envp);
 	while ((*envp)[i])
 		i++;

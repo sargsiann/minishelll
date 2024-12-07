@@ -25,6 +25,7 @@ SRC_FILES = main.c \
 	    ) \
 	    $(addprefix validation/, \
 	    validate_by_order.c validate_var_name.c \
+		check_var.c \
 	    ) \
 	    $(addprefix expansion/, \
 	    expansion.c exp_utils.c remover.c \

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exp_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 01:46:36 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/14 15:40:28 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/07 17:10:55 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+extern int	g_status;
 
 int	find_indx(char *line, char c)
 {
@@ -94,5 +96,7 @@ t_var	*get_vars(char **envp)
 		var_add(&head, tmp);
 		i++;
 	}
+	tmp = var_new(ft_strdup("?"), ft_itoa(g_status));
+	var_add(&head, tmp);
 	return (head);
 }
