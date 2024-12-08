@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/07 20:29:01 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/08 14:07:45 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,19 +107,39 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 		return ;
 	}
 	if (ft_strncmp(command->word, "unset", 6) == 0)
-		*envp = unset(envp, command->args[1]);
-	else if (ft_strncmp(command->word, "export", 7) == 0)
 	{
+		if (in == -1 && out == -1) 
+			*envp = unset(envp, command->args[1]);
+		else
+			ft_error("",1);
+	}
+	else if (ft_strncmp(command->word, "export", 7) == 0 && in == -1 && out == -1)
+	{
+		if (in != -1 || out != -1)
+		{
+			ft_error("", 1);
+			return ;
+		}
 		i = 1;
 		while (command->args[i])
 			*envp = export(envp, command->args[i++]);
 	}
 	else if (ft_strcmp(command->word, "cd") == 0)
+	{
+		if (command->args[2])
+		{
+			ft_error("cd: too many arguments", 1);
+			return ;
+		}
 		cd(command->args[1], envp);
+	}
 	else if (ft_strcmp(command->word, "exit") == 0)
 	{
 		if (check_exit_args(command->args) == 0)
-			ft_error("Minishell: exit: numeric argument required", 255);
+		{
+			ft_error("", 1);
+			exit(1);
+		}
 		exit(ft_atoi(command->args[1]));
 	}
 	else
@@ -150,6 +170,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 		}
 		close(in);
 		close(out);
-		waitpid(pid, &g_status, 0);
+		if (out == -1)
+			waitpid(pid, &g_status, 0);
 	}
 }

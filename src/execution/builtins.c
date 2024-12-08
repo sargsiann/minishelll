@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/07 20:23:01 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/08 13:52:48 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // NEED TO WRITE CD 
 
 // FIX UNSET AND EXPORT
+
+extern int	g_status;
 
 void	change_oldpwd(char ***envp, char *oldpwd, char *cur_path)
 {
@@ -40,7 +42,7 @@ void	cd(char *path, char ***envp)
 	if (!path)
 		path = ft_strdup(getenv("HOME"));
 	if (chdir(path) == -1)
-		ft_error(NO_FILE, NO_FILE_STATUS);
+		ft_error(NO_FILE, 1);
 	cur_path = getcwd(NULL, 0);
 	change_oldpwd(envp, old_path, cur_path);
 }
@@ -76,7 +78,10 @@ char	**unset(char ***envp, char *name)
 	i = 0;
 	j = 0;
 	if (!name)
+	{
+		g_status = 0;
 		return (*envp);
+	}
 	while ((*envp)[i])
 		i++;
 	new_envp = malloc(sizeof(char *) * i);
@@ -91,6 +96,7 @@ char	**unset(char ***envp, char *name)
 		}
 		i++;
 	}
+	g_status = 0;
 	new_envp[j] = NULL;
 	return (new_envp);
 }

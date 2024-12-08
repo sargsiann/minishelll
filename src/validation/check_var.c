@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 17:38:13 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/07 21:28:19 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/08 13:51:51 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,11 @@ static int	check_exit_arg(char *arg)
 
 	i = 0;
 	if (!arg)
-		return (0);
-	while (arg[i] == ' ' 
-		|| arg[i] == '+' || arg[i] == '-')
-		i++;	
+		return (0);	
 	while (arg[i])
 	{
-		if (ft_isdigit(arg[i]) == 0)
+		if (ft_isdigit(arg[i]) == 0 && arg[i] != '-' && arg[i] != '+'
+			&& arg[i] != ' ' && arg[i] != 39 && arg[i] != 34)
 			return (0);
 		i++;
 	}
@@ -93,10 +91,12 @@ int	check_exit_args(char **args)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (args[i])
 	{
 		if (check_exit_arg(args[i]) == 0)
+			return (0);
+		if (i > 1)
 			return (0);
 		i++;
 	}
