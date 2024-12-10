@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/08 14:07:45 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/10 04:15:11 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void	get_from_infile(char *infile)
 	fd = open(infile, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_error(NO_FILE, NO_FILE_STATUS);
-		exit(NO_FILE_STATUS);
+		ft_error(NO_FILE, 1);
+		exit(1);
 	}
 	if (access(infile, F_OK) == -1)
 	{
-		ft_error(NO_FILE3, NO_FILE3_STATUS);
-		exit(NO_FILE3_STATUS);	
+		ft_error(NO_FILE3, 1);
+		exit(1);	
 	}
 	dup2(fd, 0);
 	close(fd);
@@ -94,11 +94,22 @@ int 	is_digital(char *str)
 	return (1);
 }
 
+void	waiting(int pd)
+{
+	int	pid;
+	int	status;
+
+	pid = waitpid(pd, &status, WNOHANG);
+	if (WIFEXITED(status))
+		g_status = WEXITSTATUS(status);
+	
+}
+
 void	command_execution(t_command *command, int in, int out, char ***envp)
 {
 	int	pid;
 	int	fd;
-	int fd2;
+	int	fd2;
 	int	i;
 
 	if (!command->word)
@@ -106,14 +117,14 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 		ft_error(UNKNOWN_COMMAND, COMMAND_NOT_FOUND_STATUS);
 		return ;
 	}
-	if (ft_strncmp(command->word, "unset", 6) == 0)
+	if (ft_strcmp(command->word, "unset") == 0)
 	{
 		if (in == -1 && out == -1) 
 			*envp = unset(envp, command->args[1]);
 		else
-			ft_error("",1);
+			ft_error("", 1);
 	}
-	else if (ft_strncmp(command->word, "export", 7) == 0 && in == -1 && out == -1)
+	else if (ft_strcmp(command->word, "export") == 0)
 	{
 		if (in != -1 || out != -1)
 		{
@@ -169,8 +180,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 			main_exec(command, *envp);
 		}
 		close(in);
-		close(out);
-		if (out == -1)
-			waitpid(pid, &g_status, 0);
+		close(out);	
+		waiting(pid);	
 	}
 }
