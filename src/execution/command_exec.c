@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/10 04:15:11 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/12/10 04:40:45 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,6 @@ int 	is_digital(char *str)
 	return (1);
 }
 
-void	waiting(int pd)
-{
-	int	pid;
-	int	status;
-
-	pid = waitpid(pd, &status, WNOHANG);
-	if (WIFEXITED(status))
-		g_status = WEXITSTATUS(status);
-	
-}
 
 void	command_execution(t_command *command, int in, int out, char ***envp)
 {
@@ -181,6 +171,7 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 		}
 		close(in);
 		close(out);	
-		waiting(pid);	
+		if (ft_strcmp(command->word, "sleep") == 0 || out == -1)
+			waitpid(pid, &g_status, 0);
 	}
 }
