@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 02:22:18 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/07 18:41:44 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/15 22:35:01 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,10 @@ void	expand_var(t_token **head, char **envp)
 	if (ft_strcmp(tmp->word, "$?") == 0)
 	{
 		free(tmp->word);
-		tmp->word = ft_itoa(g_status);
+		if (g_status > 255)
+			tmp->word = ft_itoa(g_status>>8);
+		else
+			tmp->word = ft_itoa(g_status);
 		return ;
 	}	
 	if (is_simple_var(tmp))
