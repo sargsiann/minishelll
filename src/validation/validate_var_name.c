@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_var_name.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:08:01 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/09/11 17:08:18 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/15 19:57:28 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

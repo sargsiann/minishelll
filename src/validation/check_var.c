@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 17:38:13 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/08 13:51:51 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:11:08 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ int	check_exit_args(char **args)
 	i = 1;
 	while (args[i])
 	{
-		if (check_exit_arg(args[i]) == 0)
-			return (0);
+		if (check_exit_arg(args[i]) == 0 && args[2] == NULL)
+			return (1);
 		if (i > 1)
-			return (0);
+			return (2);
 		i++;
 	}
-	return (1);
+	return (3);
 }

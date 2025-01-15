@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 18:44:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/06 22:01:10 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:30:53 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int	check_for_parenthesis(char *line)
 	rght = 0;
 	while (line[i])
 	{
-		if (line[i] == '(')
+		if (line[i] == '(' && check_for_quotes(line) == 0)
 			lft++;
-		if (line[i] == ')')
+		if (line[i] == ')' && check_for_quotes(line) == 0)
 			rght++;
 		i++;
 	}

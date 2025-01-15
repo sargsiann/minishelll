@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/08 13:52:48 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:07:42 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ void	change_oldpwd(char ***envp, char *oldpwd, char *cur_path)
 			(*envp)[i] = ft_strjoin("PWD=", cur_path);
 		i++;
 	}
+}
+
+void	pwd()
+{
+	char	*path;
+
+	path = getcwd(NULL, 0);
+	printf("%s\n", path);
+	free(path);
+	exit(0);
 }
 
 void	cd(char *path, char ***envp)
@@ -114,6 +124,32 @@ void	env(char **envp)
 	exit(0);
 }
 
+void	echo(char **args)
+{
+	int	i;
+
+	if (!args[1])
+	{
+		printf("\n");
+		exit(0);
+	}
+	if (ft_strcmp(args[1],"-n") == 0)
+		i = 2;
+	else
+		i = 1;
+	i = 1;
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		i++;
+		if (args[i])
+			printf(" ");
+	}
+	if (ft_strcmp(args[1],"-n") != 0)
+		printf("\n");
+	exit(0);
+}
+
 char	**export(char ***envp, char *value)
 {
 	int		i;
@@ -123,7 +159,7 @@ char	**export(char ***envp, char *value)
 	i = 0;
 	if (check_var(value) == 0)
 	{
-		ft_error("not a valid identifier", 1);
+		ft_error(" not a valid identifier", 1);
 		return (*envp);
 	}
 	if (!value)

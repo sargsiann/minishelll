@@ -6,11 +6,23 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/08 13:44:37 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:02:49 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	is_builtin(char *word)
+{
+	if (ft_strcmp(word, "unset") == 0
+		|| ft_strcmp(word, "export") == 0
+		|| ft_strcmp(word, "cd") == 0
+		|| ft_strcmp(word, "env") == 0 || ft_strcmp(word, "exit") == 0
+		|| ft_strcmp(word, "pwd") == 0 || ft_strcmp(word, "echo") == 0
+		|| ft_strcmp(word, "history") == 0)
+		return (1);
+	return (0);
+}
 
 
 t_command	*new_command(t_token *t, char **envp)
@@ -20,10 +32,7 @@ t_command	*new_command(t_token *t, char **envp)
 	(void )envp;
 	command = malloc(sizeof(t_command));
 	command->type = COMMAND_ID;
-	if (ft_strcmp(t->word, "unset") == 0
-		|| ft_strcmp(t->word, "export") == 0
-		|| ft_strcmp(t->word, "cd") == 0
-		|| ft_strcmp(t->word, "env") == 0 || ft_strcmp(t->word, "exit") == 0)
+	if (is_builtin(t->word))
 		command->word = ft_strdup(t->word);
 	else
 		command->word = get_command_path(envp, t->word);

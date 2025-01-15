@@ -6,19 +6,21 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/10 04:40:45 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/15 22:03:20 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int	g_status;
+void	pwd();
+void	echo(char **args);
 
 void	main_exec(t_command *command, char **envp)
 {
 	execve(command->word, &command->args[0], envp);
 	ft_error(UNKNOWN_COMMAND, COMMAND_NOT_FOUND_STATUS);
-	exit(COMMAND_NOT_FOUND_STATUS);
+	exit(1);
 }
 
 void	get_from_infile(char *infile)
@@ -69,14 +71,16 @@ void	put_to_outfile(t_outfile *outfiles)
 
 void	duping_inpipe(int in)
 {
-	dup2(in, STDIN_FILENO);
+	if (dup2(in, STDIN_FILENO) == -1)
+		ft_error("dup2 error", 1);
 	close(in);
 }
 
 
 void	duping_outpipe(int out)
 {
-	dup2(out, STDOUT_FILENO);
+	if (dup2(out, STDOUT_FILENO) == -1)
+		ft_error("dup2 error", 1);
 	close(out);
 }
 
@@ -136,10 +140,15 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 	}
 	else if (ft_strcmp(command->word, "exit") == 0)
 	{
-		if (check_exit_args(command->args) == 0)
+		if (check_exit_args(command->args) == 2)
 		{
-			ft_error("", 1);
+			ft_error("exit: too many arguments", 1);
 			exit(1);
+		}
+		if (check_exit_args(command->args) == 1)
+		{
+			ft_error("exit: numeric argument required", 1);
+			exit(2);
 		}
 		exit(ft_atoi(command->args[1]));
 	}
@@ -166,11 +175,15 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 				duping_outpipe(out);
 			if (ft_strcmp(command->word, "env") == 0)
 				env(*envp);
+			if (ft_strcmp(command->word, "pwd") == 0)
+				pwd();
+			if (ft_strcmp(command->word, "echo") == 0)
+				echo(command->args);
 			put_to_outfile(command->outfiles);
 			main_exec(command, *envp);
 		}
 		close(in);
-		close(out);	
+		close(out);
 		if (ft_strcmp(command->word, "sleep") == 0 || out == -1)
 			waitpid(pid, &g_status, 0);
 	}
