@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 19:27:10 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/08 13:52:39 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/16 00:12:16 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	ft_mtx_free(char **mtx)
 
 void	ft_error(char *str, int status)
 {
-	write(2, str, ft_strlen(str));
-	write(2, "\n", 1);
+	strerror(errno);
 	g_status = status;
 }

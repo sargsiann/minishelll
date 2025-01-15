@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:52:21 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/07 20:29:32 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/16 00:11:52 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "gnl.h"
 # include "parser.h"
 # include "execution.h"
+# include <errno.h>
 
 # define UNCLOSING_QUOTE "Minishell: Unclosed quote"
 # define UNCLOSING_DQUOTE "Minishell: Unclosed double quote"

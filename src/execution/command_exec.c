@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/15 22:17:30 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/16 01:11:04 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,33 @@ void	main_exec(t_command *command, char **envp)
 	exit(1);
 }
 
+static void	ft_err(char *file, int filetype)
+{
+	if (access(file, F_OK) == -1)
+		ft_error(NO_FILE, NO_FILE_STATUS);
+	if (access(file, R_OK) == -1 && filetype == 1)
+		ft_error(NO_FILE3, NO_FILE3_STATUS);
+	if (access(file, W_OK) == -1 && filetype == 2)
+		ft_error(NO_FILE3, NO_FILE3_STATUS);
+	if (access(file, X_OK) == -1 && filetype == 3)
+		ft_error(NO_FILE3, NO_FILE3_STATUS);
+	else
+		return ;
+	exit(1);
+}
+
 void	get_from_infile(char *infile)
 {
 	int	fd;
 
 	if (!infile)
 		return ;
+	ft_err(infile, 1);
 	fd = open(infile, O_RDONLY);
 	if (fd == -1)
 	{
 		ft_error(NO_FILE, 1);
 		exit(1);
-	}
-	if (access(infile, F_OK) == -1)
-	{
-		ft_error(NO_FILE3, 1);
-		exit(1);	
 	}
 	dup2(fd, 0);
 	close(fd);
@@ -54,14 +65,13 @@ void	put_to_outfile(t_outfile *outfiles)
 		return ;
 	while (tmp)
 	{
+		ft_err(tmp->name, 2);
 		if (tmp->type == APPENDFILE_ID)
 			fd = open(tmp->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
 			fd = open(tmp->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
-			ft_error(NO_FILE, NO_FILE_STATUS);
-		if (access(tmp->name, F_OK) == -1)
-			ft_error(NO_FILE3, NO_FILE3_STATUS);
+			ft_err(NO_FILE, NO_FILE_STATUS);
 		if (tmp->next == NULL)
 			dup2(fd, STDOUT_FILENO);
 		close(fd);
@@ -176,6 +186,8 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 			}
 			if (command->infile)
 				get_from_infile(command->infile);
+			if (command->outfiles)
+				put_to_outfile(command->outfiles);
 			if (in != -1 && command->infile == NULL)
 				duping_inpipe(in);
 			if (out != -1 && command->outfiles == NULL)
@@ -186,7 +198,6 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 				pwd();
 			if (ft_strcmp(command->word, "echo") == 0)
 				echo(command->args);
-			put_to_outfile(command->outfiles);
 			main_exec(command, *envp);
 		}
 		close(in);

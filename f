@@ -1,0 +1,9 @@
+f
+includes
+libs
+Makefile
+minishell
+minishell_tester
+obj
+s
+src
