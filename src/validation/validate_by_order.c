@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 17:23:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/18 17:12:41 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:32:48 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,46 +27,47 @@ static int	check_order(t_token *token)
 {
 	if (token->type == SEMICOLON_ID)
 	{
-		if (token->next == NULL || is_operator(token->next))
-			return (0);
-	}
-	if (token->type == DELIMITER_ID)
-	{
-		if (token->next == NULL || is_operator(token->next))
-			return (0);
-	}
-	if (token->type == OUTFILE_ID || token->type == INFILE_ID
-		|| token->type == APPENDFILE_ID)
-	{
-		if (token->next == NULL || token->next->type != COMMAND_ID)
-			return (0);
-	}
-	if (token->type == COMMAND_ID)
-	{
-		if (token->next == NULL || is_operator(token->next))
-			return (0);
-	}
+		
+	}	
 	return (1);
 }
 
-void	redirs_case(t_token **tokens)
+void redirs_case(t_token **tokens)
 {
-	t_token	*tmp;
-	t_token	*tmp2;
+    t_token *tmp;
+    t_token *tmp2;
 
-	tmp = *tokens;
-	tmp2 = NULL;
-	while (tmp)
-	{
-		if (tmp->type == ONE_REDIR_R_ID  || DOUBLE_REDIR_R_ID)
-		{
-			if (!tmp->last || is_operator(tmp->last) )
-			{
-				
-			}
-		}
-	}
+    tmp = *tokens;
+    tmp2 = NULL;
+    while (tmp)
+    {
+        if (tmp->type == ONE_REDIR_R_ID || tmp->type == DOUBLE_REDIR_R_ID)
+        {
+            if (!tmp->last || is_operator(tmp->last))
+            {
+                tmp2 = new_token(NULL, COMMAND_ID);
+                if (tmp->last == NULL)
+                {
+                    tmp2->next = tmp;
+                    tmp->last = tmp2;
+                    *tokens = tmp2;
+                }
+                else
+                {
+                    tmp2->next = tmp;
+                    tmp2->last = tmp->last;
+                    tmp->last->next = tmp2;
+                    tmp->last = tmp2;
+                }
+                tmp = tmp->next;
+                if (!tmp)
+                    return;
+            }
+        }
+        tmp = tmp->next;
+    }
 }
+
 
 int	validate_by_order(t_token **tokens)
 {
@@ -75,9 +76,8 @@ int	validate_by_order(t_token **tokens)
 	tmp = *tokens;
 	while (tmp)
 	{
-		if (check_order(tmp) == 0)
-			return (0);
 		tmp = tmp->next;
 	}
+	redirs_case(tokens);
 	return (1);
 }

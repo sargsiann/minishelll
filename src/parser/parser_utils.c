@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/15 20:02:49 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:37:04 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_builtin(char *word)
 {
+	if (!word)
+		return (1);
 	if (ft_strcmp(word, "unset") == 0
 		|| ft_strcmp(word, "export") == 0
 		|| ft_strcmp(word, "cd") == 0

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 01:44:24 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/12/07 18:41:49 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:34:36 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	expansion(t_token **head, char **envp)
 	{
 		if (!tmp )
 			break ;
+		if (!tmp->word)
+			tmp = tmp->next;
 		expand_var(&tmp, envp);
 		if (has_quotes(tmp->word))
 			expand_quotes(&tmp, has_quotes(tmp->word));

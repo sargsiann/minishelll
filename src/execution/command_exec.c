@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/18 15:49:16 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:40:19 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	echo(char **args);
 
 void	main_exec(t_command *command, char **envp)
 {
+	if (command->word == NULL)
+		exit(0);
 	execve(command->word, &command->args[0], envp);
 	ft_error(UNKNOWN_COMMAND, COMMAND_NOT_FOUND_STATUS);
 	exit(1);
@@ -114,11 +116,6 @@ void	command_execution(t_command *command, int in, int out, char ***envp)
 	int	fd2;
 	int	i;
 
-	if (!command->word)
-	{
-		ft_error(UNKNOWN_COMMAND, COMMAND_NOT_FOUND_STATUS);
-		return ;
-	}
 	if (ft_strcmp(command->word, "unset") == 0)
 	{
 		if (in == -1 && out == -1) 
