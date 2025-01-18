@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/16 01:11:04 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 14:35:01 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	duping_inpipe(int in)
 	close(in);
 }
 
+
 void	duping_outpipe(int out)
 {
 	if (dup2(out, STDOUT_FILENO) == -1)
@@ -106,14 +107,6 @@ int 	is_digital(char *str)
 	}
 	return (1);
 }
-
-// void	change_g_status(int status, char ***envp)
-// {
-// 	if (WIFEXITED(status))
-// 		g_status = WEXITSTATUS(status);
-// 	else if (WIFSIGNALED(status))
-// 		g_status = WTERMSIG(status) + 128;
-// }
 
 
 void	command_execution(t_command *command, int in, int out, char ***envp)
