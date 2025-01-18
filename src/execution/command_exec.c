@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/18 14:35:01 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 15:25:55 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static void	ft_err(char *file, int filetype)
 {
 	if (access(file, F_OK) == -1)
 		ft_error(NO_FILE, NO_FILE_STATUS);
-	if (access(file, R_OK) == -1 && filetype == 1)
+	else if (access(file, R_OK) == -1 && filetype == 1)
 		ft_error(NO_FILE3, NO_FILE3_STATUS);
-	if (access(file, W_OK) == -1 && filetype == 2)
+	else if (access(file, W_OK) == -1 && filetype == 2)
 		ft_error(NO_FILE3, NO_FILE3_STATUS);
-	if (access(file, X_OK) == -1 && filetype == 3)
+	else if (access(file, X_OK) == -1 && filetype == 3)
 		ft_error(NO_FILE3, NO_FILE3_STATUS);
 	else
 		return ;
@@ -46,11 +46,11 @@ void	get_from_infile(char *infile)
 		return ;
 	ft_err(infile, 1);
 	fd = open(infile, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_error(NO_FILE, 1);
-		exit(1);
-	}
+	// if (fd == -1)
+	// {
+	// 	ft_error(NO_FILE, 1);
+	// 	exit(1);
+	// }
 	dup2(fd, 0);
 	close(fd);
 }
@@ -65,13 +65,11 @@ void	put_to_outfile(t_outfile *outfiles)
 		return ;
 	while (tmp)
 	{
-		ft_err(tmp->name, 2);
 		if (tmp->type == APPENDFILE_ID)
-			fd = open(tmp->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
 			fd = open(tmp->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd == -1)
-			ft_err(NO_FILE, NO_FILE_STATUS);
+		else if (tmp->type == OUTFILE_ID)
+			fd = open(tmp->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		ft_err(tmp->name, 2);
 		if (tmp->next == NULL)
 			dup2(fd, STDOUT_FILENO);
 		close(fd);

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 17:38:13 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/15 20:11:08 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 14:46:38 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		check_var(char *value)
 	char	*name;
 	char	*var;
 
-	if (ft_strchr == NULL)
+	if (ft_strchr(value, '=') == NULL)
 		index = ft_strlen(value);
 	else
 		index = ft_strchr(value, '=') - value;
@@ -66,7 +66,9 @@ int		check_var(char *value)
 	if (check_name(name) == 0)
 		return (0);
 	if (check_value(var) == 0)
+	{
 		return (0);
+	}
 	return (1);
 }
 
