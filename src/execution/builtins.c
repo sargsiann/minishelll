@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:03:58 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/18 14:51:21 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 02:47:26 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,10 @@ void	echo(char **args)
 	i = 1;
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		if (ft_strcmp(args[i],"-n") != 0)
+			printf("%s", args[i]);
 		i++;
-		if (args[i])
+		if (args[i] && ft_strcmp(args[i - 1],"-n") != 0)
 			printf(" ");
 	}
 	if (ft_strcmp(args[1],"-n") != 0)

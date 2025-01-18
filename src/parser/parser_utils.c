@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:00:07 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/18 23:37:04 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 03:09:30 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,17 @@ t_command	*new_command(t_token *t, char **envp)
 	t_command	*command;
 
 	(void )envp;
+	if (t->word && t->word[0] == 0)
+	{
+		if (t->next == NULL)
+			return (NULL);
+		while (t->word[0] == 0)
+			t = t->next;
+		if (!t)
+			return (NULL);
+		if (t->type != ARGUMENT_ID)
+			t = t->last;
+	}
 	command = malloc(sizeof(t_command));
 	command->type = COMMAND_ID;
 	if (is_builtin(t->word))

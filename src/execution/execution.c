@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:47:54 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 00:50:21 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 03:10:27 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void execution(void *root, char ***envp)
 
     op = root;
     com = root;
-
+	if (!root)
+		return ;
     if (!is_op(op)) // Если это команда, а не оператор
 		command_execution(com, -1, -1, envp);
     else

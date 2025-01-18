@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:10:40 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/21 19:57:31 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 03:09:40 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ t_command	*command_case(t_operator **current_op,
 	t_command	*current_cmd;
 
 	current_cmd = new_command(tmp, envp);
+	if (!current_cmd)
+		return (NULL);
 	if (*root == NULL)
 		*root = current_cmd;
 	else if (*current_op)
