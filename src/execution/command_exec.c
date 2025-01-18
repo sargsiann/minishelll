@@ -6,23 +6,48 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/18 23:40:19 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 01:52:48 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <sys/stat.h>
 
 extern int	g_status;
 void	pwd();
 void	echo(char **args);
+
+void	exit_with_error(const char *msg, int status)
+{
+	write(2, msg, strlen(msg));
+	write(2, "\n", 1);
+	exit(status);
+}
+
+void	check_command_path(const char *path)
+{
+	int			fd;
+	struct stat	file_stat;
+	
+	if (path[0] == '.' || path[0] == '/')
+	{
+		if (stat(path, &file_stat) == -1)
+			exit_with_error("minishell: No such file or directory", 127);
+		if (S_ISDIR(file_stat.st_mode))
+			exit_with_error("minishell: Is a directory", 126);
+		if (access(path, X_OK) == -1)
+			exit_with_error("minishell: Permission denied", 126);
+	}
+	else
+		exit_with_error("minishell: command not found", 127);
+}
 
 void	main_exec(t_command *command, char **envp)
 {
 	if (command->word == NULL)
 		exit(0);
 	execve(command->word, &command->args[0], envp);
-	ft_error(UNKNOWN_COMMAND, COMMAND_NOT_FOUND_STATUS);
-	exit(1);
+	check_command_path(command->word);
 }
 
 static void	ft_err(char *file, int filetype)
@@ -48,11 +73,6 @@ void	get_from_infile(char *infile)
 		return ;
 	ft_err(infile, 1);
 	fd = open(infile, O_RDONLY);
-	// if (fd == -1)
-	// {
-	// 	ft_error(NO_FILE, 1);
-	// 	exit(1);
-	// }
 	dup2(fd, 0);
 	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:23:42 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/18 23:36:16 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 01:50:05 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char	*get_command_path(char **envp, char *command)
 	var = ft_strdup("");
 	path = NULL;
 	equal = 0;
+	if (command[0] == '\0')
+		return (NULL);
 	if (access(command, F_OK) == 0)
 		return (ft_strdup(command));
 	while (envp[i])
@@ -84,5 +86,5 @@ char	*get_command_path(char **envp, char *command)
 			return (path);
 		i++;
 	}
-	return (NULL);
+	return (command);
 }
