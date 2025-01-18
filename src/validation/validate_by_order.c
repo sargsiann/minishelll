@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 17:23:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/15 19:58:58 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/18 17:12:41 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,60 @@ static int	is_operator(t_token *token)
 	return (0);
 }
 
+static int	check_order(t_token *token)
+{
+	if (token->type == SEMICOLON_ID)
+	{
+		if (token->next == NULL || is_operator(token->next))
+			return (0);
+	}
+	if (token->type == DELIMITER_ID)
+	{
+		if (token->next == NULL || is_operator(token->next))
+			return (0);
+	}
+	if (token->type == OUTFILE_ID || token->type == INFILE_ID
+		|| token->type == APPENDFILE_ID)
+	{
+		if (token->next == NULL || token->next->type != COMMAND_ID)
+			return (0);
+	}
+	if (token->type == COMMAND_ID)
+	{
+		if (token->next == NULL || is_operator(token->next))
+			return (0);
+	}
+	return (1);
+}
+
+void	redirs_case(t_token **tokens)
+{
+	t_token	*tmp;
+	t_token	*tmp2;
+
+	tmp = *tokens;
+	tmp2 = NULL;
+	while (tmp)
+	{
+		if (tmp->type == ONE_REDIR_R_ID  || DOUBLE_REDIR_R_ID)
+		{
+			if (!tmp->last || is_operator(tmp->last) )
+			{
+				
+			}
+		}
+	}
+}
+
 int	validate_by_order(t_token **tokens)
 {
 	t_token	*tmp;
 
-	if (!tokens)
-		return (0);
 	tmp = *tokens;
 	while (tmp)
 	{
-		if (is_operator(tmp) && tmp->type != OPEN_BRACE_ID
-			&& tmp->type != CLOSE_BRACE_ID)
-		{
-			if (!tmp->last || !tmp->next || is_operator(tmp->next))
-			{
-				if (tmp->type == ONE_REDIR_R_ID
-					|| tmp->type == DOUBLE_REDIR_R_ID || tmp->type == HERE_DOC)
-				{
-					if (tmp->next && is_operator(tmp->next) == 0)
-						return (1);
-				}
-				free_tokens(tokens);
-				return (0);
-			}
-		}
+		if (check_order(tmp) == 0)
+			return (0);
 		tmp = tmp->next;
 	}
 	return (1);
