@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:52:21 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/16 00:11:52 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 03:23:53 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define UNCLOSING_PARANTHESIS "Minishell: Unclosed paranthesis"
 # define UNKNOWN_COMMAND "Minishell: command not found"
 
-# define SYNTAX_ERROR "Minishell: syntax error near unexpected token"
+# define SYNTAX_ERROR "Minishell: syntax error near unexpected token `"
 # define VAR_ERROR "Minishell: not a valid identifier"
 
 # define NO_FILE "Minishell: No such file or directory"

@@ -6,11 +6,13 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 17:23:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 01:44:19 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 03:41:02 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+extern int	g_status;
 
 static int	is_operator(t_token *token)
 {
@@ -23,12 +25,49 @@ static int	is_operator(t_token *token)
 	return (0);
 }
 
+int	is_redir(t_token *token)
+{
+	if (token->type == ONE_REDIR_L_ID || token->type == ONE_REDIR_R_ID
+		||token->type == DOUBLE_REDIR_R_ID
+		|| token->type == HERE_DOC)
+		return (1);
+	return (0);
+}
+
+void	error_message(char *msg, char *op, int stat)
+{
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd(op, 2);
+	ft_putstr_fd("'\n", 2);
+	g_status = stat;
+}
+
 static int	check_order(t_token *token)
 {
-	if (token->type == SEMICOLON_ID)
+	if (is_operator(token))
 	{
-		
-	}	
+		if (token->next == NULL || is_operator(token->next) 
+		|| token->last == NULL || is_operator(token->last))
+		{
+			if (is_redir(token))
+			{
+				if (token->next && is_operator(token->next))
+					return 1;
+				if (token->type == ONE_REDIR_L_ID || token->type == HERE_DOC)
+					error_message(SYNTAX_ERROR, "newline", 2);
+				else
+					error_message(SYNTAX_ERROR, "newline", 2);
+				return (0);
+			}
+			if (token->next && is_redir(token->next))
+				return 1;
+			if (token->type == ONE_REDIR_L_ID || token->type == HERE_DOC)
+				error_message(SYNTAX_ERROR, "newline", 2);
+			else
+				error_message(SYNTAX_ERROR, token->word, 2);
+			return (0);
+		}
+	}
 	return (1);
 }
 
@@ -76,6 +115,8 @@ int	validate_by_order(t_token **tokens)
 	tmp = *tokens;
 	while (tmp)
 	{
+		if (check_order(tmp) == 0)
+			return (0);
 		tmp = tmp->next;
 	}
 	redirs_case(tokens);
