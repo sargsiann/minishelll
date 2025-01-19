@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 17:23:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 17:30:43 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:23:23 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,13 @@ static int	check_order(t_token *token)
 			{
 				if (token->next && is_operator(token->next))
 					return 1;
-				if (token->type == ONE_REDIR_L_ID || token->type == HERE_DOC)
+				if ((token->type == ONE_REDIR_L_ID || token->type == HERE_DOC)
+				&& token->next == NULL)
 					error_message(SYNTAX_ERROR, "newline", 2);
-				else
+				else if ((token->type == ONE_REDIR_L_ID || token->type == HERE_DOC) &&
+				ft_strcmp(token->next->word, "*") == 0)
+					error_message(" ambiguous redirect", NULL, 1);
+				else 
 					error_message(SYNTAX_ERROR, "newline", 2);
 				return (0);
 			}
