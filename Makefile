@@ -69,7 +69,11 @@ $(OBJ_DIR)/libs/gnl/%.o: libs/gnl/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(NAME): $(OBJ) $(LIBFT_LIB) $(DEPS)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o $(NAME) 
+
+bonus: $(OBJ) $(LIBFT_LIB) $(DEPS)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o minishell_bonus
+
 
 $(LIBFT_LIB):
 	make -C libs/libft all

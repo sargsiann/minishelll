@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 03:09:56 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 17:47:13 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,15 @@ void	put_to_outfile(t_outfile *outfiles)
 		return ;
 	while (tmp)
 	{
+		if (ft_strcmp(tmp->name,"*") == 0)
+		{
+			ft_error(" ambiguous redirect", 1);
+			exit(1);
+		}
 		if (tmp->type == APPENDFILE_ID)
-			fd = open(tmp->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (tmp->type == OUTFILE_ID)
 			fd = open(tmp->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (tmp->type == OUTFILE_ID)
+			fd = open(tmp->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		ft_err(tmp->name, 2);
 		if (tmp->next == NULL)
 			dup2(fd, STDOUT_FILENO);

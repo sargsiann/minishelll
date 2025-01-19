@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 17:23:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 03:41:02 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 17:30:43 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,12 @@ int	validate_by_order(t_token **tokens)
 	t_token	*tmp;
 
 	tmp = *tokens;
+	redirs_case(tokens);
 	while (tmp)
 	{
 		if (check_order(tmp) == 0)
 			return (0);
 		tmp = tmp->next;
 	}
-	redirs_case(tokens);
 	return (1);
 }
