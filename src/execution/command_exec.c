@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 18:19:41 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/19 17:47:13 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,8 @@ void	get_from_infile(char *infile)
 {
 	int	fd;
 
-	printf("infile: %s\n", infile);
 	if (!infile)
 		return ;
-	if (ft_strcmp(infile, "*") == 0)
-		ft_error(" ambiguous redirect", 1);
 	ft_err(infile, 1);
 	fd = open(infile, O_RDONLY);
 	dup2(fd, 0);
