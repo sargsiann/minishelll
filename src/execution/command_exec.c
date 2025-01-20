@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:54:53 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/20 16:15:10 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/21 00:05:51 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,89 +133,3 @@ int 	is_digital(char *str)
 	return (1);
 }
 
-
-void	command_execution(t_command *command, int in, int out, char ***envp)
-{
-	int	pid;
-	int	fd;
-	int	fd2;
-	int	i;
-
-	if (ft_strcmp(command->word, "unset") == 0)
-	{
-		if (in == -1 && out == -1) 
-			*envp = unset(envp, command->args[1]);
-		else
-			ft_error("", 1);
-	}
-	else if (ft_strcmp(command->word, "export") == 0)
-	{
-		if (in != -1 || out != -1)
-		{
-			ft_error("", 1);
-			return ;
-		}
-		i = 1;
-		while (command->args[i])
-			*envp = export(envp, command->args[i++]);
-	}
-	else if (ft_strcmp(command->word, "cd") == 0)
-	{
-		if (command->args[2])
-		{
-			ft_error("cd: too many arguments", 1);
-			return ;
-		}
-		cd(command->args[1], envp);
-	}
-	else if (ft_strcmp(command->word, "exit") == 0)
-	{
-		if (check_exit_args(command->args) == 2)
-		{
-			ft_error("exit: too many arguments", 1);
-			exit(1);
-		}
-		if (check_exit_args(command->args) == 1)
-		{
-			ft_error("exit: numeric argument required", 1);
-			exit(2);
-		}
-		exit(ft_atoi(command->args[1]));
-	}
-	else
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			if (command->here_doc)
-			{
-				fd = open("tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				get_from_hdoc(command->here_doc, fd);
-				close(fd);
-				fd = open("tmp", O_RDONLY);
-				dup2(fd, STDIN_FILENO);
-				close(fd);
-				unlink("tmp");
-			}
-			if (command->infile)
-				get_from_infile(command->infile);
-			if (command->outfiles)
-				put_to_outfile(command->outfiles);
-			if (in != -1 && command->infile == NULL)
-				duping_inpipe(in);
-			if (out != -1 && command->outfiles == NULL)
-				duping_outpipe(out);
-			if (ft_strcmp(command->word, "env") == 0)
-				env(*envp);
-			if (ft_strcmp(command->word, "pwd") == 0)
-				pwd();
-			if (ft_strcmp(command->word, "echo") == 0)
-				echo(command->args);
-			main_exec(command, *envp);
-		}
-		close(in);
-		close(out);
-		if (ft_strcmp(command->word, "sleep") == 0 || out == -1)
-			waitpid(pid, &g_status, 0);
-	}
-}
