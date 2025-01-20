@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 17:23:28 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 17:30:43 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:50:59 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void redirs_case(t_token **tokens)
     tmp2 = NULL;
     while (tmp)
     {
-        if (tmp->type == ONE_REDIR_R_ID || tmp->type == DOUBLE_REDIR_R_ID)
+        if (tmp->type == ONE_REDIR_R_ID || tmp->type == DOUBLE_REDIR_R_ID
+		|| tmp->type == ONE_REDIR_L_ID || tmp->type == HERE_DOC)
         {
             if (!tmp->last || is_operator(tmp->last))
             {
