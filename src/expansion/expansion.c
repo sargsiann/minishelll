@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 01:44:24 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/20 15:28:57 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:16:58 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,12 @@ void	expansion(t_token **head, char **envp)
 	{
 		if (tmp->type == DELIMITER_ID)
 			tmp = tmp->next;
+		if (tmp->type == COMMAND_ID && ft_strcmp(tmp->word,"awk") == 0)
+		{
+			tmp = tmp->next;
+			while (tmp && tmp->type != COMMAND_ID)
+				tmp = tmp->next;	
+		}
 		if (!tmp )
 			break ;
 		if (!tmp->word)

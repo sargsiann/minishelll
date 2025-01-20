@@ -6,7 +6,7 @@
 /*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:17:39 by dasargsy          #+#    #+#             */
-/*   Updated: 2024/11/23 17:23:44 by dasargsy         ###   ########.fr       */
+/*   Updated: 2025/01/20 15:58:25 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_matrix(char **mtx)
 		return ;
 	while (mtx[i])
 	{
-		printf("%s\n", mtx[i]);
+		printf("[%s]\n", mtx[i]);
 		i++;
 	}
 }
