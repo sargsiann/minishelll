@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcart.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dasargsy <dasargsy@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: dasargsy <dasargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:37:00 by dasargsy          #+#    #+#             */
-/*   Updated: 2025/01/19 21:06:24 by dasargsy         ###   ########.fr       */
+/*   Updated: 2024/09/14 16:01:32 by dasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,7 @@ void	expand_wildcart(t_token **token)
 	while (tmp)
 	{
 		if (finder(pattern, tmp->name) && tmp->name[0] != '.')
-		{
-			if (res[0])
-				res = ft_gstrjoin(res, " ",1,0);
-			res = ft_gstrjoin(res, tmp->name, 1, 0);
-		}
+			res = ft_gstrjoin(res, ft_gstrjoin(tmp->name, " ", 0, 0), 1, 1);
 		tmp = tmp->next;
 	}
 	if (res[0])
